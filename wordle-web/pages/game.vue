@@ -10,7 +10,7 @@
     </v-tooltip>
 
     <v-card-text class="text-h1 font-weight-black text-center">
-      Wordle!
+      Wordle!!
     </v-card-text>
 
     <v-alert v-if="wordleGame.gameOver" width="80%" :type="gameResult.type">

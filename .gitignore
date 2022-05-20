@@ -351,3 +351,5 @@ MigrationBackup/
 
 # Mac OS
 .DS_Store
+notes.txt
+.gitignore

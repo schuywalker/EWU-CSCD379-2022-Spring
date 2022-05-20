@@ -1,18 +1,19 @@
-﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Wordle.Api.Data;
 using Wordle.Api.Services;
 
 namespace Wordle.Api.Controllers;
+
 [Route("api/[controller]")]
 [ApiController]
-public class PlayerController : ControllerBase
+public class PlayersController : ControllerBase
 {
-    private readonly PlayerService _service;
-    public PlayerController(PlayerService service)
-	{
-		_service = service;
-	}
+    private readonly PlayersService _service;
+
+    public PlayersController(PlayersService service)
+    {
+        _service = service;
+    }
 
     [HttpGet]
     public IEnumerable<Player> Get()
@@ -20,19 +21,30 @@ public class PlayerController : ControllerBase
         return _service.GetPlayers();
     }
 
+    [Route("[action]")]
+    [HttpGet]
+    public IEnumerable<Player> GetTop10()
+    {
+        return _service.GetTop10Players();
+    }
+
     [HttpPost]
     public IActionResult Post([FromBody] PlayerPost player)
     {
-        // check if score 
-        _service.Update(player.Name, player.AverageAttempts, player.AverageTime);
+        if (player == null || player.Attempts < 1 || player.Attempts > 6
+            || player.Seconds < 1)
+        {
+            return BadRequest();
+        }
+        //how is the PlayerPost being created and how to you validate its input?
+        _service.Update(player.Name ?? "Guest", player.Attempts, player.Seconds);
         return Ok();
     }
+
     public class PlayerPost
     {
-        public String PlayerId {get; set;}
-        public String Name {get; set;}
-        public int GameCount {get; set;}
-        public double AverageAttempts {get; set;}
+        public string? Name { get; set; }
+        public int Attempts { get; set; }
+        public int Seconds { get; set; }
     }
 }
-

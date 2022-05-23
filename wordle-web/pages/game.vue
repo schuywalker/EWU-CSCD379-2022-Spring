@@ -130,7 +130,7 @@ export default class Game extends Vue {
   wordleGame = new WordleGame(this.word)
   dialogBox = new DialogBox()
 
-  isLoaded: boolean = false
+  isLoaded: boolean = true
 
   mounted() {
     // setTimeout(() => {

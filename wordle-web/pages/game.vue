@@ -120,7 +120,7 @@ export default class Game extends Vue {
   word: string = WordsService.getRandomWord()
   wordleGame = new WordleGame(this.word)
 
-  isLoaded: boolean = false
+  isLoaded: boolean = true
 
   mounted() {
     // setTimeout(() => {

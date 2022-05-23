@@ -1,15 +1,15 @@
 <template>
   <v-container fluid fill-height>
-<!--    <v-container v-if="!isLoaded">-->
-<!--      <v-row justify="center">-->
-<!--        <v-card loading>-->
-<!--          <v-card-title class="justify-center">-->
-<!--            You're being exploited for ad revenue, please standby...-->
-<!--          </v-card-title>-->
-<!--          <PrerollAd />-->
-<!--        </v-card>-->
-<!--      </v-row>-->
-<!--    </v-container>-->
+    <!--    <v-container v-if="!isLoaded">-->
+    <!--      <v-row justify="center">-->
+    <!--        <v-card loading>-->
+    <!--          <v-card-title class="justify-center">-->
+    <!--            You're being exploited for ad revenue, please standby...-->
+    <!--          </v-card-title>-->
+    <!--          <PrerollAd />-->
+    <!--        </v-card>-->
+    <!--      </v-row>-->
+    <!--    </v-container>-->
     <v-container v-if="isLoaded">
       <v-row justify="center">
         <v-col cols="5"></v-col>
@@ -70,11 +70,7 @@
       <v-row>
         <v-col cols="3"></v-col>
         <v-col cols="6" class="mt-0 mb-0 pt-0 pb-0">
-          <v-img
-            src="logo.jpeg"
-            class="center"
-            style="width: 400px; height: 100px"
-          />
+          <NotWordleLogo />
         </v-col>
         <v-col cols="3">
           <v-card-text align="right">

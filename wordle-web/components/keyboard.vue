@@ -1,62 +1,147 @@
 <template>
-  <v-card class="ma-0 pa-0" color="transparent" flat>
-    <v-row v-for="(charRow, i) in chars" :key="i" justify="center">
-      <v-col v-for="char in charRow" :key="char" cols="1" class="ma-0 pa-0">
-        <v-container class="text-center ma-0 pa-0">
-          <v-btn
-            class="pa-1 mx-3 my-1"
-            elevation="8"
-            :color="letterColor(char) == '' ? 'info' : letterColor(char)"
-            style="
-              background: linear-gradient(
-                180deg,
-                rgba(0, 0, 0, 0.4) 0%,
-                rgba(0, 0, 0, 0) 40%,
-                rgba(0, 0, 0, 0) 100%
-              );
-            "
-            :disabled="wordleGame.gameOver"
-            @click="keyPress(char)"
-          >
-            {{ char }}
-          </v-btn>
-        </v-container>
-      </v-col>
-    </v-row>
-
-    <v-row justify="center">
-      <v-col cols="2">
-        <v-btn
-          :disabled="wordleGame.gameOver"
-          class="float-left pa-1 ml-3"
-          @click="guessWord"
+  <v-container class="ma-0 pa-0">
+    <!-- small container -->
+    <v-container class="d-md-none d-lg-none d-xl-none ma-0 pa-0">
+      <v-card class="" color="transparent" flat>
+        <v-row
+          v-for="(charRow, i) in chars"
+          :key="i"
+          justify="center"
+          class="my-0 mx-.5"
         >
-          Guess
-        </v-btn>
-      </v-col>
+          <!-- mx spacing between buttons. my spacing between gameboard and guess bar. -->
+          <v-col v-for="char in charRow" :key="char" cols="1" class="ma-0 pa-0">
+            <v-container class="text-center pa-0">
+              <v-btn
+                class="pa-1 mx-0 my-0"
+                x-small
+                elevation="8"
+                :color="letterColor(char) == '' ? 'info' : letterColor(char)"
+                style="
+                  transform: scale(0.8);
+                  background: linear-gradient(
+                    180deg,
+                    rgba(0, 0, 0, 0.4) 0%,
+                    rgba(0, 0, 0, 0) 40%,
+                    rgba(0, 0, 0, 0) 100%
+                  );
+                "
+                :disabled="wordleGame.gameOver"
+                @click="keyPress(char)"
+              >
+                {{ char }}
+              </v-btn>
+            </v-container>
+          </v-col>
+        </v-row>
 
-      <v-col cols="8">
-        <CandidateDisplay
-          class="pa-0"
-          :disable="wordleGame.gameOver"
-          :candidatesArray="candidatesArray"
-          :display.sync="render"
-          @fill-word="fillWord"
-        />
-      </v-col>
+        <v-row justify="center">
+          <v-col cols="2">
+            <v-btn
+              :disabled="wordleGame.gameOver"
+              class="float-left pa-1 ml-3"
+              @click="guessWord"
+              x-small
+            >
+              Guess
+            </v-btn>
+          </v-col>
 
-      <v-col cols="2">
-        <v-btn
-          :disabled="wordleGame.gameOver"
-          class="float-right pa-1"
-          @click="removeLetter"
+          <v-col cols="8">
+            <CandidateDisplay
+              class="pa-0"
+              :disable="wordleGame.gameOver"
+              :candidatesArray="candidatesArray"
+              :display.sync="render"
+              @fill-word="fillWord"
+            />
+          </v-col>
+
+          <v-col cols="2">
+            <v-btn
+              :disabled="wordleGame.gameOver"
+              class="float-right pa-1"
+              @click="removeLetter"
+            >
+              <v-icon>mdi-backspace</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
+        <v-row justify="center" class="mt-n2"> </v-row>
+      </v-card>
+    </v-container>
+
+    <!-- large container -->
+    <v-container class="d-sm-none d-xs-none ma-0 pa-0">
+      <v-card class="" color="transparent" flat>
+        <v-row
+          v-for="(charRow, i) in chars"
+          :key="i"
+          justify="center"
+          class="my-0 mx-.5"
         >
-          <v-icon>mdi-backspace</v-icon>
-        </v-btn>
-      </v-col>
-    </v-row>
-    <v-row justify="center" class="mt-n2"> </v-row>
-  </v-card>
+          <!-- mx spacing between buttons. my spacing between gameboard and guess bar. -->
+          <v-col v-for="char in charRow" :key="char" cols="1" class="ma-0 pa-0">
+            <v-container class="text-center pa-0">
+              <v-btn
+                class="pa-1 mx-0 my-0"
+                x-large
+                elevation="8"
+                :color="letterColor(char) == '' ? 'info' : letterColor(char)"
+                style="
+                  transform: scale(0.8);
+                  background: linear-gradient(
+                    180deg,
+                    rgba(0, 0, 0, 0.4) 0%,
+                    rgba(0, 0, 0, 0) 40%,
+                    rgba(0, 0, 0, 0) 100%
+                  );
+                "
+                :disabled="wordleGame.gameOver"
+                @click="keyPress(char)"
+              >
+                {{ char }}
+              </v-btn>
+            </v-container>
+          </v-col>
+        </v-row>
+
+        <v-row justify="center">
+          <v-col cols="2">
+            <v-btn
+              :disabled="wordleGame.gameOver"
+              class="float-left pa-1 ml-3"
+              @click="guessWord"
+              x-small
+            >
+              Guess
+            </v-btn>
+          </v-col>
+
+          <v-col cols="8">
+            <CandidateDisplay
+              class="pa-0"
+              :disable="wordleGame.gameOver"
+              :candidatesArray="candidatesArray"
+              :display.sync="render"
+              @fill-word="fillWord"
+            />
+          </v-col>
+
+          <v-col cols="2">
+            <v-btn
+              :disabled="wordleGame.gameOver"
+              class="float-right pa-1"
+              @click="removeLetter"
+            >
+              <v-icon>mdi-backspace</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
+        <v-row justify="center" class="mt-n2"> </v-row>
+      </v-card>
+    </v-container>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -146,3 +231,4 @@ export default class KeyBoard extends Vue {
   }
 }
 </script>
+<style></style>

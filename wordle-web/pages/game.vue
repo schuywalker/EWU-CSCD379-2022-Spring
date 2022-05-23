@@ -86,8 +86,16 @@
       <v-row justify="center" class="mt-10">
         <v-alert v-if="wordleGame.gameOver" width="80%" :type="gameResult.type">
           {{ gameResult.text }}
-          <v-btn class="ml-2" @click="resetGame"> Play Again? </v-btn>
+
+          <v-btn class="ml-2" @click="resetGame">don't save results</v-btn>
+          <v-btn class="ml-2" @click="dialogBox.showDialog"
+            >save my results!</v-btn
+          >
         </v-alert>
+      </v-row>
+
+      <v-row v-if="dialogBox.visible" justify="center" class="mt-10">
+        <DialogBox />
       </v-row>
 
       <v-row justify="center">
@@ -107,6 +115,7 @@ import { GameState, WordleGame } from '~/scripts/wordleGame'
 import KeyBoard from '@/components/keyboard.vue'
 import GameBoard from '@/components/game-board.vue'
 import { Word } from '~/scripts/word'
+import DialogBox from '@/components/DialogBox.vue'
 
 @Component({ components: { KeyBoard, GameBoard } })
 export default class Game extends Vue {
@@ -119,6 +128,7 @@ export default class Game extends Vue {
   intervalID: any
   word: string = WordsService.getRandomWord()
   wordleGame = new WordleGame(this.word)
+  dialogBox = new DialogBox()
 
   isLoaded: boolean = false
 
@@ -154,7 +164,7 @@ export default class Game extends Vue {
     if (this.wordleGame.state === GameState.Lost) {
       return {
         type: 'error',
-        text: `You lost... :^( The word was ${this.word}`,
+        text: `\t\tYou lost... :^( The word was ${this.word} \nWould you like to make a profile and save your results?`,
       }
     }
     return { type: '', text: '' }

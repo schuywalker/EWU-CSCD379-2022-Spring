@@ -28,6 +28,14 @@ public class PlayersController : ControllerBase
         return _service.GetTop10Players();
     }
 
+    [Route("[action]")]
+    [HttpGet]
+    public IEnumerable<Player> GetTop10(DateTime day)
+    {
+        return _service.GetTop10Players();
+    }
+
+
     [HttpPost]
     public IActionResult Post([FromBody] PlayerPost player)
     {

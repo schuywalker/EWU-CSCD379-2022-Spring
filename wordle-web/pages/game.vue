@@ -1,15 +1,15 @@
 <template>
   <v-container fluid fill-height>
-    <v-container v-if="!isLoaded">
-      <v-row justify="center">
-        <v-card loading>
-          <v-card-title class="justify-center">
-            You're being exploited for ad revenue, please standby...
-          </v-card-title>
-          <PrerollAd />
-        </v-card>
-      </v-row>
-    </v-container>
+<!--    <v-container v-if="!isLoaded">-->
+<!--      <v-row justify="center">-->
+<!--        <v-card loading>-->
+<!--          <v-card-title class="justify-center">-->
+<!--            You're being exploited for ad revenue, please standby...-->
+<!--          </v-card-title>-->
+<!--          <PrerollAd />-->
+<!--        </v-card>-->
+<!--      </v-row>-->
+<!--    </v-container>-->
     <v-container v-if="isLoaded">
       <v-row justify="center">
         <v-col cols="5"></v-col>
@@ -123,11 +123,11 @@ export default class Game extends Vue {
   isLoaded: boolean = false
 
   mounted() {
-    setTimeout(() => {
-      this.isLoaded = true
-    }, 5000)
+    // setTimeout(() => {
+    //   this.isLoaded = true
+    // }, 5000)
     this.retrieveUserName()
-    setTimeout(() => this.startTimer(), 5000) // delay is because of ad loading
+    // setTimeout(() => this.startTimer(), 5000) // delay is because of ad loading
   }
 
   resetGame() {

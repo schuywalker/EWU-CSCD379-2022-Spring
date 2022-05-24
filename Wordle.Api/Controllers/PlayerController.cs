@@ -28,7 +28,7 @@ public class PlayersController : ControllerBase
         return _service.GetTop10Players();
     }
 
-    [Route("[action]")]
+    [Route("daily/[action]")]
     [HttpGet]
     public IEnumerable<Player> GetTop10(DateTime day)
     {

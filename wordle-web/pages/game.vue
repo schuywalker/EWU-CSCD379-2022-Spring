@@ -68,7 +68,17 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="3"></v-col>
+        <v-col cols="2">
+          <v-menu>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn color="primary" v-bind="attrs" v-on="on"
+                >select date</v-btn
+              >
+            </template>
+            <v-date-picker v-model="picker"></v-date-picker>
+          </v-menu>
+        </v-col>
+        <v-col cols="1"></v-col>
         <v-col cols="6" class="mt-0 mb-0 pt-0 pb-0">
           <NotWordleLogo />
         </v-col>
@@ -117,6 +127,9 @@ export default class Game extends Vue {
   wordleGame = new WordleGame(this.word)
 
   isLoaded: boolean = true
+  picker = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+    .toISOString()
+    .substr(0, 10)
 
   mounted() {
     // setTimeout(() => {

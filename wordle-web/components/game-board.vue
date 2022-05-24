@@ -6,7 +6,7 @@
           v-for="index in wordleGame.currentWord.maxLetters"
           :key="index"
           cols="1"
-          class="ma-2 pa-2"
+          class="ma-3 pa-2"
         >
           <v-row>
             <v-card

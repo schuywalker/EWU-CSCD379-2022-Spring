@@ -3,10 +3,10 @@
     <v-container class="overflow-hidden" fluid>
       <v-row justify="center">
         <v-col>
-          <!-- <Adsense
+<!--          <Adsense
             data-ad-client="ca-pub-1431122584842002"
             data-ad-slot="9479195735"
-          ></Adsense> -->
+          ></Adsense>-->
           <!-- That doesn't work without a top-level domain, anyway. Here's a fake ad instead -->
           <a href="https://youtu.be/dQw4w9WgXcQ" target="_blank">
             <v-img src="ad.gif" />

@@ -38,6 +38,9 @@
         <v-btn color="primary" @click="getTop10Players">
           Get Top 10 Players
         </v-btn>
+        <v-btn nuxt to="/dailyLeaderboard">
+          Go To Daily Leaderboard
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-container>

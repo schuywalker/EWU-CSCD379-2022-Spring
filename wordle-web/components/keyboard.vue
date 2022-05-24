@@ -1,7 +1,8 @@
 <template>
   <v-container class="ma-0 pa-0">
     <!-- small container -->
-    <v-container class="d-md-none d-lg-none d-xl-none ma-0 pa-0">
+    <v-container v-if="isMobile()" class="ma-0 pa-0">
+      <!-- d-md-none d-lg-none d-xl-none  -->
       <v-card class="" color="transparent" flat>
         <v-row
           v-for="(charRow, i) in chars"
@@ -13,6 +14,7 @@
           <v-col v-for="char in charRow" :key="char" cols="1" class="ma-0 pa-0">
             <v-container class="text-center pa-0">
               <v-btn
+                flex
                 class="pa-1 mx-0 my-0"
                 x-small
                 elevation="8"
@@ -72,7 +74,8 @@
     </v-container>
 
     <!-- large container -->
-    <v-container class="d-sm-none d-xs-none ma-0 pa-0">
+
+    <v-container v-if="!isMobile()" class="ma-0 pa-0">
       <v-card class="" color="transparent" flat>
         <v-row
           v-for="(charRow, i) in chars"
@@ -165,6 +168,10 @@ export default class KeyBoard extends Vue {
     }
 
     this.setLetter(char)
+  }
+
+  isMobile() {
+    return this.$vuetify.breakpoint.smAndDown
   }
 
   beforeMount() {

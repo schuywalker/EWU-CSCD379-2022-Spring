@@ -1,19 +1,25 @@
 <template>
   <v-container fluid fill-height>
-    <!--    <v-container v-if="!isLoaded">-->
-    <!--      <v-row justify="center">-->
-    <!--        <v-card loading>-->
-    <!--          <v-card-title class="justify-center">-->
-    <!--            You're being exploited for ad revenue, please standby...-->
-    <!--          </v-card-title>-->
-    <!--          <PrerollAd />-->
-    <!--        </v-card>-->
-    <!--      </v-row>-->
-    <!--    </v-container>-->
     <v-container v-if="isLoaded">
       <v-row justify="center">
-        <v-col cols="5"></v-col>
-        <v-col cols="2" class="mt-0 mb-0 pt-0 pb-0">
+        <v-col cols="5">
+          <v-menu>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn small color="primary" v-bind="attrs" v-on="on"
+                >select date</v-btn
+              >
+            </template>
+            <v-date-picker
+              elevation="15"
+              v-model="picker"
+              @change="pickDate({ picker })"
+              show-current="2022-05-20"
+            ></v-date-picker>
+          </v-menu>
+          <div>{{ picker }}</div>
+        </v-col>
+
+        <v-col cols="3" class="mt-0 mb-0 pt-0 pb-0">
           <v-tooltip bottom>
             <template #activator="{ on, attrs }">
               <v-container>
@@ -35,10 +41,10 @@
             <span> Go Home </span>
           </v-tooltip>
         </v-col>
-        <v-col cols="5" class="d-flex flex-row-reverse">
+        <v-col cols="4" class="d-flex flex-row-reverse">
           <v-dialog v-model="dialog" justify-end persistent max-width="600px">
             <template #activator="{ on, attrs }">
-              <v-btn color="primary" dark v-bind="attrs" v-on="on">
+              <v-btn small color="primary" dark v-bind="attrs" v-on="on">
                 {{ playerName }}
               </v-btn>
             </template>
@@ -68,27 +74,18 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="2">
-          <v-menu>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn color="primary" v-bind="attrs" v-on="on"
-                >select date</v-btn
-              >
-            </template>
-            <v-date-picker v-model="picker"></v-date-picker>
-          </v-menu>
-        </v-col>
-        <v-col cols="1"></v-col>
+        <v-col cols="3"></v-col>
         <v-col cols="6" class="mt-0 mb-0 pt-0 pb-0">
           <NotWordleLogo />
         </v-col>
         <v-col cols="3">
           <v-card-text align="right">
-            <v-icon>mdi-timer</v-icon>
+            <v-icon color="blue">mdi-timer</v-icon>
             {{ displayTimer() }}
           </v-card-text>
         </v-col>
       </v-row>
+
       <v-row justify="center" class="mt-10">
         <v-alert v-if="wordleGame.gameOver" width="80%" :type="gameResult.type">
           {{ gameResult.text }}
@@ -140,6 +137,11 @@ export default class Game extends Vue {
   picker = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
     .toISOString()
     .substr(0, 10)
+
+  pickDate(s: string) {
+    console.log(s)
+  }
+  // clickedDate: Date =
 
   mounted() {
     // setTimeout(() => {
@@ -245,3 +247,10 @@ export default class Game extends Vue {
   }
 }
 </script>
+<style>
+#app {
+  background: url('././static/oceanMobile.jpg') center;
+  background-size: 100%;
+  background-position-y: -20%;
+}
+</style>

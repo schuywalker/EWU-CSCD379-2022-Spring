@@ -1,5 +1,5 @@
-<template>
-  <v-img class="notwordle-logo" src="logo.jpeg" />
+<template class="ma-0 pa-0">
+  <v-img class="notwordle-logo ma-0 pa-0" src="logo.jpeg" />
 </template>
 
 <style>
@@ -7,14 +7,6 @@
   transform: rotateY(720deg);
   animation: turn 2.5s ease-out forwards 0.5s;
 }
-
-/* doesnt do anything
-.center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-} */
 
 @keyframes turn {
   100% {

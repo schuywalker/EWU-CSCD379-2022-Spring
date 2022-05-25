@@ -14,7 +14,6 @@
           <v-col v-for="char in charRow" :key="char" cols="1" class="ma-0 pa-0">
             <v-container class="text-center pa-0">
               <v-btn
-                flex
                 class="pa-1 mx-0 my-0"
                 x-small
                 elevation="8"
@@ -51,6 +50,7 @@
 
           <v-col cols="8">
             <CandidateDisplay
+              style="transform: scale(0.8)"
               class="pa-0"
               :disable="wordleGame.gameOver"
               :candidatesArray="candidatesArray"
@@ -61,11 +61,12 @@
 
           <v-col cols="2">
             <v-btn
+              x-small
               :disabled="wordleGame.gameOver"
-              class="float-right pa-1"
+              class="float-right pa-0"
               @click="removeLetter"
             >
-              <v-icon>mdi-backspace</v-icon>
+              <v-icon x-small>mdi-backspace</v-icon>
             </v-btn>
           </v-col>
         </v-row>
@@ -171,7 +172,7 @@ export default class KeyBoard extends Vue {
   }
 
   isMobile() {
-    return this.$vuetify.breakpoint.smAndDown
+    return this.$vuetify.breakpoint.xs
   }
 
   beforeMount() {

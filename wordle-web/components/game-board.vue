@@ -1,5 +1,5 @@
 <template>
-  <v-card class="ma-5 py-1" max-width="600px" flat>
+  <v-card color="transparent" class="ma-5 py-1" max-width="600px" flat>
     <v-container>
       <v-row v-for="row in wordleGame.maxGuesses" :key="row" justify="center">
         <v-col

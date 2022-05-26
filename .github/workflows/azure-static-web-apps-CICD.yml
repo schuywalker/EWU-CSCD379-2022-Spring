@@ -5,7 +5,7 @@ on:
     push:
         branches:
             - main
-            - "Assignment*"
+            - "*Assignment*"
         paths:
             - "wordle-web/**"
             - "**/azure-static-web*"

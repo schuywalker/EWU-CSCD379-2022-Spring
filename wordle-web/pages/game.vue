@@ -88,7 +88,7 @@
 
       <v-row v-if="wordleGame.gameOver" justify="center" class="mt-10">
         <v-alert
-          v-if="!usernameIsGuestAtGameEnd()"
+          v-if="!usernameIsGuestAtGameEnd() && !dialog"
           width="80%"
           :type="gameResult.type"
         >

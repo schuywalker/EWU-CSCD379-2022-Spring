@@ -40,7 +40,7 @@
           <v-col cols="2">
             <v-btn
               :disabled="wordleGame.gameOver"
-              class="float-left pa-1 ml-0"
+              class="float-left pa-2 ml-0"
               @click="guessWord"
               x-small
             >
@@ -50,7 +50,7 @@
           <v-col cols="8">
             <v-col>
               <CandidateDisplayMobile
-                class="pa-0 ml-1"
+                class="pa-0 ml-2"
                 :disable="wordleGame.gameOver"
                 :candidatesArray="candidatesArray"
                 :display.sync="render"
@@ -62,7 +62,7 @@
             <v-btn
               x-small
               :disabled="wordleGame.gameOver"
-              class="float-right mr-1 pa-0"
+              class="float-right mr-0 pa-0"
               @click="removeLetter"
             >
               <v-icon class="" x-small>mdi-backspace</v-icon>

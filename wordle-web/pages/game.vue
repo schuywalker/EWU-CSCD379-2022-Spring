@@ -19,7 +19,7 @@
           <div>{{ picker }}</div>
         </v-col>
 
-        <v-col cols="3" class="mt-0 mb-0 pt-0 pb-0">
+        <v-col cols="2" class="mt-0 mb-0 pt-0 pb-0">
           <v-tooltip bottom>
             <template #activator="{ on, attrs }">
               <v-container>
@@ -41,7 +41,7 @@
             <span> Go Home </span>
           </v-tooltip>
         </v-col>
-        <v-col cols="4" class="d-flex flex-row-reverse">
+        <v-col cols="5" class="d-flex flex-row-reverse">
           <v-dialog v-model="dialog" justify-end persistent max-width="600px">
             <template #activator="{ on, attrs }">
               <v-btn small color="primary" dark v-bind="attrs" v-on="on">
@@ -247,10 +247,3 @@ export default class Game extends Vue {
   }
 }
 </script>
-<style>
-#app {
-  background: url('././static/oceanMobile.jpg') center;
-  background-size: 100%;
-  background-position-y: -20%;
-}
-</style>

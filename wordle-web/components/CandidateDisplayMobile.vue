@@ -1,23 +1,18 @@
 <template>
   <v-container fluid>
     <v-row justify="center">
-      <v-col>
+      <v-col class="ma-0 pa-0">
         <v-card class="d-flex justify-center" color="transparent" flat>
           <v-btn
             v-if="!display"
+            x-small
             block
             :disabled="disable"
             @click="showDisplay(true)"
           >
             {{ candidatesArray.length }} Available
           </v-btn>
-          <v-list
-            v-else
-            max-height="120px"
-            width="100%"
-            dense
-            class="overflow-y-auto"
-          >
+          <v-list class="overflow-y-auto ma-0 pa-0" v-else width="100%">
             <v-list-item
               v-for="choice in candidatesArray"
               :key="choice"

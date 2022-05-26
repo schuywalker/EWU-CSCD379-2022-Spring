@@ -81,3 +81,11 @@ export default {
       </template>
       <span> Leader Board </span>
     </v-tooltip> -->
+<style>
+#app {
+  background: url('././static/ocean.jpg') center;
+  background-size: 100%;
+  background-position-y: 0%;
+  background-blend-mode: color;
+}
+</style>

@@ -40,37 +40,36 @@
           <v-col cols="2">
             <v-btn
               :disabled="wordleGame.gameOver"
-              class="float-left pa-1 ml-3"
+              class="float-left pa-1 ml-0"
               @click="guessWord"
               x-small
             >
               Guess
             </v-btn>
           </v-col>
-
           <v-col cols="8">
-            <CandidateDisplay
-              style="transform: scale(0.8)"
-              class="pa-0"
-              :disable="wordleGame.gameOver"
-              :candidatesArray="candidatesArray"
-              :display.sync="render"
-              @fill-word="fillWord"
-            />
+            <v-col>
+              <CandidateDisplayMobile
+                class="pa-0 ml-1"
+                :disable="wordleGame.gameOver"
+                :candidatesArray="candidatesArray"
+                :display.sync="render"
+                @fill-word="fillWord"
+              />
+            </v-col>
           </v-col>
-
           <v-col cols="2">
             <v-btn
               x-small
               :disabled="wordleGame.gameOver"
-              class="float-right pa-0"
+              class="float-right mr-1 pa-0"
               @click="removeLetter"
             >
-              <v-icon x-small>mdi-backspace</v-icon>
+              <v-icon class="" x-small>mdi-backspace</v-icon>
             </v-btn>
           </v-col>
         </v-row>
-        <v-row justify="center" class="mt-n2"> </v-row>
+        <v-row justify="center" class="ma-2"> </v-row>
       </v-card>
     </v-container>
 
@@ -93,7 +92,7 @@
                 elevation="8"
                 :color="letterColor(char) == '' ? 'info' : letterColor(char)"
                 style="
-                  transform: scale(0.8);
+                  transform: scale(0.7);
                   background: linear-gradient(
                     180deg,
                     rgba(0, 0, 0, 0.4) 0%,
@@ -114,9 +113,8 @@
           <v-col cols="2">
             <v-btn
               :disabled="wordleGame.gameOver"
-              class="float-left pa-1 ml-3"
+              class="float-left pa-2 ml-1"
               @click="guessWord"
-              x-small
             >
               Guess
             </v-btn>
@@ -142,7 +140,7 @@
             </v-btn>
           </v-col>
         </v-row>
-        <v-row justify="center" class="mt-n2"> </v-row>
+        <v-row justify="center" class="ma-3"> </v-row>
       </v-card>
     </v-container>
   </v-container>
@@ -239,4 +237,3 @@ export default class KeyBoard extends Vue {
   }
 }
 </script>
-<style></style>

@@ -86,19 +86,22 @@
         </v-col>
       </v-row>
 
-      <v-row justify="center" class="mt-10">
-        <v-alert v-if="wordleGame.gameOver" width="80%" :type="gameResult.type">
+      <v-row v-if="wordleGame.gameOver" justify="center" class="mt-10">
+        <v-alert
+          v-if="!usernameIsGuestAtGameEnd()"
+          width="80%"
+          :type="gameResult.type"
+        >
+          {{ gameResult.text }}
+          <v-btn class="ml-2" @click="resetGame"> Play Again? </v-btn>
+        </v-alert>
+
+        <v-alert v-else width="80%" :type="gameResult.type">
           {{ gameResult.text }}
 
           <v-btn class="ml-2" @click="resetGame">don't save results</v-btn>
-          <v-btn class="ml-2" @click="dialogBox.showDialog"
-            >save my results!</v-btn
-          >
+          <v-btn class="ml-2" @click="dialog = true">save my results!</v-btn>
         </v-alert>
-      </v-row>
-
-      <v-row v-if="dialogBox.visible" justify="center" class="mt-10">
-        <DialogBox />
       </v-row>
 
       <v-row justify="center">
@@ -118,8 +121,6 @@ import { GameState, WordleGame } from '~/scripts/wordleGame'
 import KeyBoard from '@/components/keyboard.vue'
 import GameBoard from '@/components/game-board.vue'
 import { Word } from '~/scripts/word'
-import DialogBox from '@/components/DialogBox.vue'
-
 @Component({ components: { KeyBoard, GameBoard } })
 export default class Game extends Vue {
   // ? need this for closing button
@@ -131,14 +132,13 @@ export default class Game extends Vue {
   intervalID: any
   word: string = WordsService.getRandomWord()
   wordleGame = new WordleGame(this.word)
-  dialogBox = new DialogBox()
-
   isLoaded: boolean = true
-  picker = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-    .toISOString()
-    .substr(0, 10)
+  // temp :string = this.playerName
+  usernameIsGuestAtGameEnd() {
+    const temp = this.playerName.toLowerCase()
+    return temp === 'guest' || temp === ''
+  }
 
-  isLoaded: boolean = true
   picker = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
     .toISOString()
     .substr(0, 10)
@@ -146,6 +146,7 @@ export default class Game extends Vue {
   pickDate(s: string) {
     console.log(s)
   }
+
   // clickedDate: Date =
 
   mounted() {
@@ -172,9 +173,10 @@ export default class Game extends Vue {
         this.playerName !== ''
       ) {
         this.endGameSave()
-      } else {
-        this.dialog = true
       }
+      // else {
+      //   this.dialog = true
+      // }
       return { type: 'success', text: 'You won! :^)' }
     }
     if (this.wordleGame.state === GameState.Lost) {

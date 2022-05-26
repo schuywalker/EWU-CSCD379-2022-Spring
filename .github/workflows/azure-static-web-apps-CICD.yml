@@ -1,4 +1,4 @@
-name: Azure Static Web Apps CI/CD
+name: A4 Workflow
 env:
   API_URL: ${{secrets.API_URL}}
 on:

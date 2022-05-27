@@ -9,7 +9,7 @@ using static Wordle.Api.Data.Game;
 namespace Wordle.Api.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class DateWordController : Controller
 {
     private readonly GameService _gameService;

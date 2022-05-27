@@ -57,8 +57,11 @@ namespace Wordle.Api.Services
             var game = new Game()
             {
                 WordId = word.WordId,
+                Word = word,
                 PlayerId = player.PlayerId,
-                DateStarted = DateTime.UtcNow,
+                Player = _context.Players
+                .FirstOrDefault(x => x.Guid == playerGuid),
+            DateStarted = DateTime.UtcNow,
                 GameType = gameType,
                 WordDate = date
             };

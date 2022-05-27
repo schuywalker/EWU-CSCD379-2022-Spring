@@ -164,15 +164,12 @@ export default class Game extends Vue {
   wasPlayed: boolean = false
 
   getGame() {
-
     return this.$axios
       .post('/api/DateWord', {
         date: this.picker,
-        playerGuid: "00000000-0000-0000-0000-000000000000",
+        playerGuid: Guid.newGuid(), // "00000000-0000-0000-0000-000000000000",
       })
       .then((game) => {
-        console.log(game);
-        console.log(game.data);
         console.log(game.data.word);
 
         this.word = game.data.Word
@@ -256,6 +253,16 @@ export default class Game extends Vue {
       attempts: this.wordleGame!.words.length,
       seconds: Math.round(this.stopwatch.currentTime / 1000),
     })
+  }
+
+}
+class Guid {
+  static newGuid() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+      const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
   }
 }
 </script>

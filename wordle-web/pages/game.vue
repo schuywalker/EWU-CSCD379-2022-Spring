@@ -1,24 +1,18 @@
 <template>
   <v-container fluid fill-height>
+    <v-container v-if="!isLoaded">
+      <v-row justify="center">
+        <v-card loading>
+          <v-card-title class="justify-center">
+            You're being exploited for ad revenue, please standby...
+          </v-card-title>
+            <PrerollAd/>
+        </v-card>
+      </v-row>
+    </v-container>
     <v-container v-if="isLoaded">
       <v-row justify="center">
-        <v-col cols="5">
-          <v-menu>
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn small color="primary" v-bind="attrs" v-on="on"
-                >select date</v-btn
-              >
-            </template>
-            <v-date-picker
-              elevation="15"
-              v-model="picker"
-              @change="pickDate({ picker })"
-              show-current="2022-05-20"
-            ></v-date-picker>
-          </v-menu>
-          <div>{{ picker }}</div>
-        </v-col>
-
+        <v-col cols="5"></v-col>
         <v-col cols="2" class="mt-0 mb-0 pt-0 pb-0">
           <v-tooltip bottom>
             <template #activator="{ on, attrs }">
@@ -44,7 +38,7 @@
         <v-col cols="5" class="d-flex flex-row-reverse">
           <v-dialog v-model="dialog" justify-end persistent max-width="600px">
             <template #activator="{ on, attrs }">
-              <v-btn small color="primary" dark v-bind="attrs" v-on="on">
+              <v-btn color="primary" dark v-bind="attrs" v-on="on">
                 {{ playerName }}
               </v-btn>
             </template>
@@ -76,16 +70,19 @@
       <v-row>
         <v-col cols="3"></v-col>
         <v-col cols="6" class="mt-0 mb-0 pt-0 pb-0">
-          <NotWordleLogo />
+          <v-img
+            src="logo.jpeg"
+            class="center"
+            style="width: 400px; height: 100px"
+          />
         </v-col>
         <v-col cols="3">
           <v-card-text align="right">
-            <v-icon color="blue">mdi-timer</v-icon>
+            <v-icon>mdi-timer</v-icon>
             {{ displayTimer() }}
           </v-card-text>
         </v-col>
       </v-row>
-
       <v-row justify="center" class="mt-10">
         <v-alert v-if="wordleGame.gameOver" width="80%" :type="gameResult.type">
           {{ gameResult.text }}
@@ -95,10 +92,6 @@
             >save my results!</v-btn
           >
         </v-alert>
-      </v-row>
-
-      <v-row v-if="dialogBox.visible" justify="center" class="mt-10">
-        <DialogBox />
       </v-row>
 
       <v-row justify="center">
@@ -117,6 +110,7 @@ import { WordsService } from '~/scripts/wordsService'
 import { GameState, WordleGame } from '~/scripts/wordleGame'
 import KeyBoard from '@/components/keyboard.vue'
 import GameBoard from '@/components/game-board.vue'
+import {Stopwatch} from '~/scripts/stopwatch'
 import { Word } from '~/scripts/word'
 import DialogBox from '@/components/DialogBox.vue'
 
@@ -131,24 +125,18 @@ export default class Game extends Vue {
   intervalID: any
   word: string = WordsService.getRandomWord()
   wordleGame = new WordleGame(this.word)
-  dialogBox = new DialogBox()
 
-  isLoaded: boolean = true
-  picker = new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-    .toISOString()
-    .substr(0, 10)
-
-  pickDate(s: string) {
-    console.log(s)
-  }
-  // clickedDate: Date =
+  isLoaded: boolean = false
 
   mounted() {
-    // setTimeout(() => {
-    //   this.isLoaded = true
-    // }, 5000)
+    if (!this.stopwatch.isRunning) {
+      this.stopwatch.Start();
+    }
     this.retrieveUserName()
-    // setTimeout(() => this.startTimer(), 5000) // delay is because of ad loading
+  }
+
+  displayTimer(): string {
+    return this.stopwatch.getFormattedTime();
   }
 
   resetGame() {
@@ -175,7 +163,7 @@ export default class Game extends Vue {
     if (this.wordleGame.state === GameState.Lost) {
       return {
         type: 'error',
-        text: `\t\tYou lost... :^( The word was ${this.word} \nWould you like to make a profile and save your results?`,
+        text: `You lost... :^( The word was ${this.word}`,
       }
     }
     return { type: '', text: '' }

@@ -12,7 +12,7 @@
             <v-date-picker
               elevation="15"
               v-model="picker"
-              @change="pickDate({ picker })"
+              @change="pickDate()"
               show-current="2022-05-20"
             ></v-date-picker>
           </v-menu>
@@ -153,8 +153,9 @@ export default class Game extends Vue {
 
   wordleGame: WordleGame | undefined
 
-  pickDate(dateChoice: string) {
-    this.wordleGame = new WordleGame(dateChoice)
+  pickDate() {
+    this.getGame()
+    this.wordleGame = new WordleGame(this.word)
   }
 
   // clickedDate: Date =
@@ -169,8 +170,8 @@ export default class Game extends Vue {
         playerGuid: this.playerName,
       })
       .then((game) => {
-        this.word = JSON.parse(game.data)['Word']
-        this.wasPlayed = JSON.parse(game.data)['WasPlayed']
+        this.word = JSON.parse(game.data).Word
+        this.wasPlayed = JSON.parse(game.data).WasPlayed
       })
   }
 
@@ -184,9 +185,7 @@ export default class Game extends Vue {
     // }, 5000)
     this.retrieveUserName()
     // setTimeout(() => this.startTimer(), 5000) // delay is because of ad loading
-
-    let currentGame = this.getGame()
-
+    this.getGame();
     this.wordleGame = new WordleGame(this.word)
   }
 

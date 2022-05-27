@@ -137,7 +137,7 @@ export default class Game extends Vue {
   // word: string = WordsService.getRandomWord()
   gameDate: string = ''
 
-  isLoaded: boolean = true
+  isLoaded: boolean = false
 
   // @Prop({ required: true })
 
@@ -180,13 +180,14 @@ export default class Game extends Vue {
       this.stopwatch.Start()
     }
 
-    // setTimeout(() => {
-    //   this.isLoaded = true
-    // }, 5000)
+
     this.retrieveUserName()
     // setTimeout(() => this.startTimer(), 5000) // delay is because of ad loading
     this.getGame();
     this.wordleGame = new WordleGame(this.word)
+    setTimeout(() => {
+      this.isLoaded = true
+    }, 1000)
   }
 
   displayTimer(): string {

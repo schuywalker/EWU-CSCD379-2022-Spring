@@ -1,8 +1,8 @@
 <template>
-  <v-container>
-    <v-row justify="center">
+  <v-container class="pa-0">
+    <v-row justify="center" no-gutters>
       <!-- Back Button -->
-      <v-col cols="1">
+      <v-col>
         <v-btn
           fab
           v-bind="attrs"
@@ -18,38 +18,72 @@
       <v-col cols="12">
         <v-card flat color="transparent">
           <v-card-title class="justify-center">
-            <h1>!Wordle</h1>
+            <h2>!Wordle</h2>
           </v-card-title>
         </v-card>
       </v-col>
 
       <!-- Game Card -->
-      <v-col cols="8">
-        <v-card>
-          <div class="d-flex align-center">
-            <v-icon size="150" class="ma-6">mdi-file-word-box</v-icon>
-            <v-card-text decoration>
-              Not Wordle (stylized as <em>!Wordle</em>), is a web development
-              course-based game <em>heavily</em> inspired by
-              <em
-                ><a href="https://en.wikipedia.org/wiki/Josh_Wardle"
-                  >Josh Wardle</a
-                >'s</em
-              >
-              viral creation
-              <a href="https://www.nytimes.com/games/wordle/index.html"
-                >Wordle</a
-              >.
-              <v-spacer />
-              Clearly, this is not the same game, but rather a unique spin on
-              the new classic written by students at
-              <a href="https://www.ewu.edu">Eastern Washington University</a>
-              learning .NET web application development.
-            </v-card-text>
-          </div>
-        </v-card>
-      </v-col>
-
+      <v-container class="ma-0 pa-0">
+        <v-col cols="10">
+          <!-- regular -->
+          <v-card v-if="!isMobile()">
+            <div class="d-flex align-center">
+              <v-icon size="150" class="ma-6">mdi-file-word-box</v-icon>
+              <v-card-text decoration>
+                Not Wordle (stylized as <em>!Wordle</em>), is a web development
+                course-based game <em>heavily</em> inspired by
+                <em
+                  ><a href="https://en.wikipedia.org/wiki/Josh_Wardle"
+                    >Josh Wardle</a
+                  >'s</em
+                >
+                viral creation
+                <a href="https://www.nytimes.com/games/wordle/index.html"
+                  >Wordle</a
+                >.
+                <v-spacer />
+                Clearly, this is not the same game, but rather a unique spin on
+                the new classic written by students at
+                <a href="https://www.ewu.edu">Eastern Washington University</a>
+                learning .NET web application development.
+              </v-card-text>
+            </div>
+          </v-card>
+          <!-- mobile -->
+          <v-card v-else>
+            <div class="d-flex align-center">
+              <v-row justify="center">
+                <v-col cols="8">
+                  <v-icon size="150px" class="ma-6">mdi-file-word-box</v-icon>
+                </v-col>
+                <v-col>
+                  <v-card-text decoration>
+                    Not Wordle (stylized as <em>!Wordle</em>), is a web
+                    development course-based game <em>heavily</em> inspired by
+                    <em
+                      ><a href="https://en.wikipedia.org/wiki/Josh_Wardle"
+                        >Josh Wardle</a
+                      >'s</em
+                    >
+                    viral creation
+                    <a href="https://www.nytimes.com/games/wordle/index.html"
+                      >Wordle</a
+                    >.
+                    <v-spacer />
+                    Clearly, this is not the same game, but rather a unique spin
+                    on the new classic written by students at
+                    <a href="https://www.ewu.edu"
+                      >Eastern Washington University</a
+                    >
+                    learning .NET web application development.
+                  </v-card-text>
+                </v-col>
+              </v-row>
+            </div>
+          </v-card>
+        </v-col>
+      </v-container>
       <!-- Instructor Cards -->
       <v-col cols="12">
         <v-card flat color="transparent">
@@ -135,5 +169,34 @@ import Vue from 'vue'
 import Component from 'vue-class-component'
 
 @Component
-export default class AboutPage extends Vue {}
+export default class AboutPage extends Vue {
+  isMobile() {
+    return this.$vuetify.breakpoint.xs
+  }
+
+  // credit to @dcox2005 for this awesome reactive breakpoint solution
+  screenSizes() {
+    const sizes = {
+      'x-small': false,
+      small: false,
+      large: false,
+      'x-large': false,
+    }
+    switch (this.$vuetify.breakpoint.name) {
+      case 'xs':
+        sizes['x-small'] = true
+        break
+      case 'sm':
+        sizes.small = true
+        break
+      case 'lg':
+        sizes.large = true
+        break
+      case 'xl':
+        sizes['x-large'] = true
+        break
+      default:
+    }
+  }
+}
 </script>

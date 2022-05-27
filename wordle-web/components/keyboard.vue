@@ -185,6 +185,7 @@ export default class KeyBoard extends Vue {
   ]
 
   setLetter(char: string) {
+    console.log(this.wordleGame)
     this.wordleGame.currentWord.addLetter(char)
     this.updateCandidates()
   }

@@ -105,27 +105,28 @@
       </v-row>
 
       <v-row justify="center">
-        <game-board :wordleGame="wordleGame"/>
+        <game-board :wordleGame="wordleGame" />
       </v-row>
       <v-row justify="center">
-        <keyboard :wordleGame="wordleGame"/>
+        <keyboard :wordleGame="wordleGame" />
       </v-row>
     </v-container>
   </v-container>
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator'
-import {WordsService} from '~/scripts/wordsService'
-import {GameState, WordleGame} from '~/scripts/wordleGame'
+import { Component, Vue } from 'vue-property-decorator'
+import { WordsService } from '~/scripts/wordsService'
+import { GameState, WordleGame } from '~/scripts/wordleGame'
 import KeyBoard from '@/components/keyboard.vue'
 import GameBoard from '@/components/game-board.vue'
 import { Word } from '~/scripts/word'
-import {Stopwatch} from '~/scripts/stopwatch'
+import { Stopwatch } from '~/scripts/stopwatch'
+// import {route} from ''
 
-@Component({components: {KeyBoard, GameBoard}})
+@Component({ components: { KeyBoard, GameBoard } })
 export default class Game extends Vue {
-  stopwatch: Stopwatch = new Stopwatch();
+  stopwatch: Stopwatch = new Stopwatch()
   // ? need this for closing button
   dialog: boolean = false
   playerName: string = ''
@@ -133,9 +134,13 @@ export default class Game extends Vue {
   startTime: number = 0
   endTime: number = 0
   intervalID: any
-  word: string = WordsService.getRandomWord()
-  wordleGame = new WordleGame(this.word)
+  // word: string = WordsService.getRandomWord()
+  gameDate: string = ''
+
   isLoaded: boolean = true
+
+  // @Prop({ required: true })
+
   // temp :string = this.playerName
   usernameIsGuestAtGameEnd() {
     const temp = this.playerName.toLowerCase()
@@ -146,31 +151,53 @@ export default class Game extends Vue {
     .toISOString()
     .substr(0, 10)
 
+  wordleGame: WordleGame | undefined
+
   pickDate(s: string) {
-    console.log(s)
+    this.wordleGame = new WordleGame(this.picker)
   }
 
   // clickedDate: Date =
 
+  word: string = ''
+  wasPlayed: boolean = false
+
+  getGameWithDate() {
+    return this.$axios
+      .post('/api/DateWord', {
+        date: this.picker,
+        playerGuid: this.playerName,
+      })
+      .then((game) => {
+        this.word = JSON.parse(game.data)['Word']
+        this.wasPlayed = JSON.parse(game.data)['WasPlayed']
+      })
+  }
+
   mounted() {
     if (!this.stopwatch.isRunning) {
-      this.stopwatch.Start();
+      this.stopwatch.Start()
     }
+
     // setTimeout(() => {
     //   this.isLoaded = true
     // }, 5000)
     this.retrieveUserName()
     // setTimeout(() => this.startTimer(), 5000) // delay is because of ad loading
+
+    let currentGame = this.getGameWithDate()
+
+    this.wordleGame = new WordleGame(currentGame[data])
   }
 
   displayTimer(): string {
-    return this.stopwatch.getFormattedTime();
+    return this.stopwatch.getFormattedTime()
   }
 
   resetGame() {
     this.word = WordsService.getRandomWord()
     this.wordleGame = new WordleGame(this.word)
-    this.stopwatch.Start();
+    this.stopwatch.Start()
   }
 
   get gameResult() {
@@ -223,7 +250,7 @@ export default class Game extends Vue {
       name: this.playerName,
       attempts: this.wordleGame.words.length,
       seconds: Math.round(this.stopwatch.currentTime / 1000),
-    },);
+    })
   }
 }
 </script>

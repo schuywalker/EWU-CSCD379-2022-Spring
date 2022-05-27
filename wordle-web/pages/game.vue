@@ -104,7 +104,9 @@
           <v-btn class="ml-2" @click="dialog = true">save my results!</v-btn>
         </v-alert>
       </v-row>
-
+    <v-card-text style="background-color: grey" class="text-center" >
+      Welcome to Extreme Hard Mode Wordle!!!!!! (Custom Gamemode)<br/><br/>You will receive only 6 attempts to solve this puzzle. The game board will ignore your key presses and only reflect changes once you press guess. If you do not guess the word, you will fail and not receive any further chances.<br/>Thanks for playing!
+    </v-card-text>
       <v-row justify="center">
         <game-board :wordleGame="wordleGame"/>
       </v-row>

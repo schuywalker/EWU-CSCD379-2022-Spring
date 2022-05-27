@@ -171,8 +171,12 @@ export default class Game extends Vue {
         playerGuid: "00000000-0000-0000-0000-000000000000",
       })
       .then((game) => {
-        this.word = JSON.parse(game.data).Word
-        this.wasPlayed = JSON.parse(game.data).WasPlayed
+        console.log(game);
+        console.log(game.data);
+        console.log(game.data.word);
+
+        this.word = game.data.Word
+        this.wasPlayed = game.data.WasPlayed
       })
   }
 

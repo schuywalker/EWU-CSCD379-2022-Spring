@@ -1,5 +1,6 @@
 import { LetterStatus } from './letter'
 import { Word } from './word'
+import axios from 'axios';
 
 export enum GameState {
   Active = 0,
@@ -11,6 +12,7 @@ export class WordleGame {
   constructor(word: string) {
     this.words.push(new Word())
     this.word = word
+   
   }
 
   private word: string

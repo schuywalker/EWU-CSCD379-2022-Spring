@@ -5,7 +5,7 @@ on:
     push:
         branches:
             - main
-            - "Assignment*"
+            - "*Assignment*"
         paths:
             - "wordle-web/**"
             - "**/azure-static-web*"
@@ -55,14 +55,24 @@ jobs:
                   skip_api_build: true
                   ###### End of Repository/Build Configurations ######
 
-    close_pull_request_job:
-        if: github.event_name == 'pull_request' && github.event.action == 'closed'
-        runs-on: ubuntu-latest
-        name: Close Pull Request Job
-        steps:
-            - name: Close Pull Request
-              id: closepullrequest
-              uses: Azure/static-web-apps-deploy@v1
-              with:
-                  azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-                  action: "close"
+    deploy:
+      runs-on: windows-latest
+      needs: build_and_deploy_job
+      environment:
+        name: 'Production'
+        url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+      steps:
+        - name: Download artifact from build job
+          uses: actions/download-artifact@v2
+          with:
+            name: .net-app
+
+        - name: Deploy to Azure Web App
+          id: deploy-to-webapp
+          uses: azure/webapps-deploy@v2
+          with:
+            app-name: 'WordleApiClassDavid'
+            slot-name: 'Production'
+            publish-profile: ${{ secrets.API_AZUREAPPSERVICE_PUBLISHPROFILE }}
+            package: .

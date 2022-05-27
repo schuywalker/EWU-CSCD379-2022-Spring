@@ -14,7 +14,7 @@ namespace Wordle.Api.Services
 
         public IEnumerable<ScoreStat> GetScoreStats()
         {
-            var result = _context.ScoreStats.OrderBy(x => x.Score);
+            var result = _context.ScoreStats.OrderBy(x => x.TotalGames).OrderBy(x => x.Score);
             return result;
         }
         

@@ -34,15 +34,15 @@
                 Not Wordle (stylized as <em>!Wordle</em>), is a web development
                 course-based game <em>heavily</em> inspired by
                 <em
-                  ><a href="https://en.wikipedia.org/wiki/Josh_Wardle"
-                    >Josh Wardle</a
-                  >'s</em
+                ><a href="https://en.wikipedia.org/wiki/Josh_Wardle"
+                >Josh Wardle</a
+                >'s</em
                 >
                 viral creation
                 <a href="https://www.nytimes.com/games/wordle/index.html"
-                  >Wordle</a
+                >Wordle</a
                 >.
-                <v-spacer />
+                <v-spacer/>
                 Clearly, this is not the same game, but rather a unique spin on
                 the new classic written by students at
                 <a href="https://www.ewu.edu">Eastern Washington University</a>
@@ -62,19 +62,19 @@
                     Not Wordle (stylized as <em>!Wordle</em>), is a web
                     development course-based game <em>heavily</em> inspired by
                     <em
-                      ><a href="https://en.wikipedia.org/wiki/Josh_Wardle"
-                        >Josh Wardle</a
-                      >'s</em
+                    ><a href="https://en.wikipedia.org/wiki/Josh_Wardle"
+                    >Josh Wardle</a
+                    >'s</em
                     >
                     viral creation
                     <a href="https://www.nytimes.com/games/wordle/index.html"
-                      >Wordle</a
+                    >Wordle</a
                     >.
-                    <v-spacer />
+                    <v-spacer/>
                     Clearly, this is not the same game, but rather a unique spin
                     on the new classic written by students at
                     <a href="https://www.ewu.edu"
-                      >Eastern Washington University</a
+                    >Eastern Washington University</a
                     >
                     learning .NET web application development.
                   </v-card-text>
@@ -94,26 +94,26 @@
       </v-col>
 
       <!-- Meg -->
-      <v-col cols="8">
-        <v-card>
-          <div class="d-flex align-center">
+      <v-col cols="11" class="">
+        <v-card class="flex pa-0 ma-0">
+          <v-card-title class="justify-left">
+            Meghan Woodford
+          </v-card-title>
+          <div class="d-flex">
             <v-avatar size="150" class="ma-6">
-              <v-img src="/meg.png" />
+              <v-img src="/meg.png"/>
             </v-avatar>
             <v-container fluid>
               <v-card flat>
-                <v-card-title class="justify-left">
-                  Meghan Woodford
-                </v-card-title>
                 <v-card-text>
                   Meghan is very great... just ask her!
-                  <v-spacer />
+                  <v-spacer/>
                   <small
-                    ><em>
-                      "Create an About page that has a few sentences about this
-                      class project <br />
-                      and <strong>how great Meg is</strong> ✅"
-                    </em>
+                  ><em>
+                    "Create an About page that has a few sentences about this
+                    class project <br/>
+                    and <strong>how great Meg is</strong> ✅"
+                  </em>
                     — Meg</small
                   >
                 </v-card-text>
@@ -129,22 +129,22 @@
       </v-col>
 
       <!-- Grant -->
-      <v-col cols="8">
+      <v-col cols="11" class=" pt-1 mt-1">
         <v-card>
-          <div class="d-flex align-center">
+          <v-card-title class="justify-left">
+            Grant Erickson
+          </v-card-title>
+          <div class="d-flex">
             <v-avatar size="150" class="ma-6">
-              <v-img src="grant.jpg" />
+              <v-img src="grant.jpg"/>
             </v-avatar>
             <v-container fluid>
               <v-card flat>
-                <v-card-title class="justify-left">
-                  Grant Erickson
-                </v-card-title>
                 <v-card-text>
                   Meghan is very great... just ask Grant!
-                  <v-spacer />
+                  <v-spacer/>
                   <small
-                    ><em> "It's not necessarily defined as falsy." </em> — Grant
+                  ><em> "It's not necessarily defined as falsy." </em> — Grant
                   </small>
                 </v-card-text>
                 <v-card-actions>

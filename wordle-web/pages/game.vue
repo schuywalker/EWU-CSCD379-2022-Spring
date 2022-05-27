@@ -164,10 +164,11 @@ export default class Game extends Vue {
   wasPlayed: boolean = false
 
   getGame() {
+
     return this.$axios
       .post('/api/DateWord', {
         date: this.picker,
-        playerGuid: this.playerName,
+        playerGuid: "00000000-0000-0000-0000-000000000000",
       })
       .then((game) => {
         this.word = JSON.parse(game.data).Word

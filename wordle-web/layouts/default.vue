@@ -49,6 +49,12 @@
             <SettingsDialog />
           </v-btn>
         </v-list-item>
+
+        <v-list-item>
+          <v-btn text block nuxt to="/instructions">
+            Instructions <v-icon>mdi-book-open-variant</v-icon>
+          </v-btn>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-footer app>

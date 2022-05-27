@@ -153,8 +153,8 @@ export default class Game extends Vue {
 
   wordleGame: WordleGame | undefined
 
-  pickDate(s: string) {
-    this.wordleGame = new WordleGame(this.picker)
+  pickDate(dateChoice: string) {
+    this.wordleGame = new WordleGame(dateChoice)
   }
 
   // clickedDate: Date =
@@ -162,7 +162,7 @@ export default class Game extends Vue {
   word: string = ''
   wasPlayed: boolean = false
 
-  getGameWithDate() {
+  getGame() {
     return this.$axios
       .post('/api/DateWord', {
         date: this.picker,
@@ -185,9 +185,9 @@ export default class Game extends Vue {
     this.retrieveUserName()
     // setTimeout(() => this.startTimer(), 5000) // delay is because of ad loading
 
-    let currentGame = this.getGameWithDate()
+    let currentGame = this.getGame()
 
-    this.wordleGame = new WordleGame(currentGame[data])
+    this.wordleGame = new WordleGame(this.word)
   }
 
   displayTimer(): string {
@@ -203,7 +203,7 @@ export default class Game extends Vue {
   get gameResult() {
     this.stopwatch.Stop()
     this.timeInSeconds = Math.floor(this.endTime - this.startTime)
-    if (this.wordleGame.state === GameState.Won) {
+    if (this.wordleGame!.state === GameState.Won) {
       if (
         this.playerName.toLocaleLowerCase() !== 'guest' &&
         this.playerName !== ''
@@ -212,7 +212,7 @@ export default class Game extends Vue {
       }
       return { type: 'success', text: 'You won! :^)' }
     }
-    if (this.wordleGame.state === GameState.Lost) {
+    if (this.wordleGame!.state === GameState.Lost) {
       return {
         type: 'error',
         text: `\t\tYou lost... :^( The word was ${this.word} \nWould you like to make a profile and save your results?`,
@@ -222,7 +222,7 @@ export default class Game extends Vue {
   }
 
   getLetter(row: number, index: number) {
-    const word: Word = this.wordleGame.words[row - 1]
+    const word: Word = this.wordleGame!.words[row - 1]
     if (word !== undefined) {
       return word.letters[index - 1]?.char ?? ''
     }
@@ -240,7 +240,7 @@ export default class Game extends Vue {
 
   setUserName(userName: string) {
     localStorage.setItem('userName', userName)
-    if (this.wordleGame.state === GameState.Won) {
+    if (this.wordleGame!.state === GameState.Won) {
       this.endGameSave()
     }
   }
@@ -248,7 +248,7 @@ export default class Game extends Vue {
   endGameSave() {
     this.$axios.post('/api/Players', {
       name: this.playerName,
-      attempts: this.wordleGame.words.length,
+      attempts: this.wordleGame!.words.length,
       seconds: Math.round(this.stopwatch.currentTime / 1000),
     })
   }

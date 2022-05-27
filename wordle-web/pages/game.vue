@@ -4,16 +4,17 @@
       <v-row justify="center">
         <v-col cols="5">
           <v-menu>
-            <template v-slot:activator="{ on, attrs }">
+            <template #activator="{ on, attrs }">
               <v-btn small color="primary" v-bind="attrs" v-on="on"
-                >select date</v-btn
+              >select date
+              </v-btn
               >
             </template>
             <v-date-picker
-              elevation="15"
               v-model="picker"
-              @change="pickDate()"
+              elevation="15"
               show-current="2022-05-20"
+              @change="pickDate()"
             ></v-date-picker>
           </v-menu>
           <div>{{ picker }}</div>
@@ -76,7 +77,7 @@
       <v-row>
         <v-col cols="3"></v-col>
         <v-col cols="6" class="mt-0 mb-0 pt-0 pb-0">
-          <NotWordleLogo />
+          <NotWordleLogo/>
         </v-col>
         <v-col cols="3">
           <v-card-text align="right">
@@ -105,26 +106,25 @@
       </v-row>
 
       <v-row justify="center">
-        <game-board :wordleGame="wordleGame" />
+        <game-board :wordleGame="wordleGame"/>
       </v-row>
       <v-row justify="center">
-        <keyboard :wordleGame="wordleGame" />
+        <keyboard :wordleGame="wordleGame"/>
       </v-row>
     </v-container>
   </v-container>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import { WordsService } from '~/scripts/wordsService'
-import { GameState, WordleGame } from '~/scripts/wordleGame'
+import {Component, Vue} from 'vue-property-decorator'
+import {GameState, WordleGame} from '~/scripts/wordleGame'
 import KeyBoard from '@/components/keyboard.vue'
 import GameBoard from '@/components/game-board.vue'
-import { Word } from '~/scripts/word'
-import { Stopwatch } from '~/scripts/stopwatch'
+import {Word} from '~/scripts/word'
+import {Stopwatch} from '~/scripts/stopwatch'
 // import {route} from ''
 
-@Component({ components: { KeyBoard, GameBoard } })
+@Component({components: {KeyBoard, GameBoard}})
 export default class Game extends Vue {
   stopwatch: Stopwatch = new Stopwatch()
   // ? need this for closing button
@@ -158,13 +158,11 @@ export default class Game extends Vue {
     this.wordleGame = new WordleGame(this.word)
   }
 
-  // clickedDate: Date =
-
   word: string = ''
   wasPlayed: boolean = false
 
   getGame() {
-    return this.$axios
+    this.$axios
       .post('/api/DateWord', {
         date: this.picker,
         playerGuid: Guid.newGuid(), // "00000000-0000-0000-0000-000000000000",
@@ -172,8 +170,9 @@ export default class Game extends Vue {
       .then((game) => {
         console.log(game.data.word);
 
-        this.word = game.data.Word
+        this.word = game.data.word
         this.wasPlayed = game.data.WasPlayed
+        this.wordleGame = new WordleGame(this.word)
       })
   }
 
@@ -186,7 +185,7 @@ export default class Game extends Vue {
     this.retrieveUserName()
     // setTimeout(() => this.startTimer(), 5000) // delay is because of ad loading
     this.getGame();
-    this.wordleGame = new WordleGame(this.word)
+
     setTimeout(() => {
       this.isLoaded = true
     }, 1000)
@@ -197,8 +196,7 @@ export default class Game extends Vue {
   }
 
   resetGame() {
-    this.word = WordsService.getRandomWord()
-    this.wordleGame = new WordleGame(this.word)
+    this.getGame()
     this.stopwatch.Start()
   }
 
@@ -212,7 +210,7 @@ export default class Game extends Vue {
       ) {
         this.endGameSave()
       }
-      return { type: 'success', text: 'You won! :^)' }
+      return {type: 'success', text: 'You won! :^)'}
     }
     if (this.wordleGame!.state === GameState.Lost) {
       return {
@@ -220,7 +218,7 @@ export default class Game extends Vue {
         text: `\t\tYou lost... :^( The word was ${this.word} \nWould you like to make a profile and save your results?`,
       }
     }
-    return { type: '', text: '' }
+    return {type: '', text: ''}
   }
 
   getLetter(row: number, index: number) {
@@ -256,11 +254,12 @@ export default class Game extends Vue {
   }
 
 }
+
 class Guid {
   static newGuid() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
       const r = Math.random() * 16 | 0;
-        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+      const v = c === 'x' ? r : (r & 0x3 | 0x8);
       return v.toString(16);
     });
   }

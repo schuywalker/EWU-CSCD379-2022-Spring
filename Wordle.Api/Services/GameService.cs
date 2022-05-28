@@ -25,7 +25,7 @@ namespace Wordle.Api.Services
             {
                 player = new Player { Guid = playerGuid };
                 _context.Players.Add(player);
-                _context.SaveChanges();
+                //_context.SaveChanges();
             }
 
             //Return the game if it already exists
@@ -39,8 +39,7 @@ namespace Wordle.Api.Services
                     .Include(x => x.Word)
                     .FirstOrDefault(x => x.PlayerId == player.PlayerId &&
                                          x.GameType == GameTypeEnum.WordOfTheDay &&
-                                         x.DateEnded.HasValue &&
-                                         x.WordDate == date.Value);
+                                         x.WordDate == date.Value.Date);
                 if (existingGame is not null)
                 {
                     return existingGame;
@@ -57,18 +56,16 @@ namespace Wordle.Api.Services
             var game = new Game()
             {
                 WordId = word.WordId,
-                Word = word,
                 //PlayerId = player.PlayerId,
-                Player = _context.Players
-                .FirstOrDefault(x => x.Guid == playerGuid),
+                Player = player,
             DateStarted = DateTime.UtcNow,
                 GameType = gameType,
-                WordDate = date
+                WordDate = date?.Date
             };
             _context.Games.Add(game);
 
             _context.SaveChanges();
-
+            game.Word = word;
             return game;
 
         }

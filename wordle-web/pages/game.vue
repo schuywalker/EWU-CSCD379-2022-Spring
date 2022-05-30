@@ -1,6 +1,16 @@
 <template>
   <v-container fluid fill-height>
-    <v-container v-if="isLoaded">
+    <v-container v-if="!isLoaded">
+      <v-row justify="center">
+        <v-card loading>
+          <v-card-title class="justify-center">
+            You're being exploited for ad revenue, please standby...
+          </v-card-title>
+          <PrerollAd/>
+        </v-card>
+      </v-row>
+    </v-container>
+    <v-container v-else>
       <v-row justify="center">
         <v-col cols="5">
           <v-menu>
@@ -87,7 +97,7 @@
         </v-col>
       </v-row>
 
-      <v-row v-if="wordleGame.gameOver" justify="center" class="mt-10">
+      <v-row v-if="wordleGame !== null && wordleGame.gameOver" justify="center" class="mt-10">
         <v-alert
           v-if="!usernameIsGuestAtGameEnd() && !dialog"
           width="80%"
@@ -136,7 +146,7 @@ export default class Game extends Vue {
   startTime: number = 0
   endTime: number = 0
   intervalID: any
-  // word: string = WordsService.getRandomWord()
+  word: string = "xzxzx"
   gameDate: string = ''
 
   isLoaded: boolean = false
@@ -153,14 +163,13 @@ export default class Game extends Vue {
     .toISOString()
     .substr(0, 10)
 
-  wordleGame: WordleGame | undefined
+  wordleGame: WordleGame = new WordleGame(this.word)
 
   pickDate() {
     this.getGame()
     this.wordleGame = new WordleGame(this.word)
   }
 
-  word: string = ''
   wasPlayed: boolean = false
 
   playerGUID : string | undefined;
@@ -169,7 +178,7 @@ export default class Game extends Vue {
     this.$axios
       .post('/api/DateWord', {
         date: this.picker,
-        playerGuid: Guid.newGuid(), // "00000000-0000-0000-0000-000000000000",
+        playerGuid: this.playerGUID, // "00000000-0000-0000-0000-000000000000",
       })
       .then((game) => {
         console.log(game.data.word);
@@ -177,6 +186,7 @@ export default class Game extends Vue {
         this.word = game.data.word
         this.wasPlayed = game.data.WasPlayed
         this.wordleGame = new WordleGame(this.word)
+        this.isLoaded = true;
       })
   }
 
@@ -192,14 +202,9 @@ export default class Game extends Vue {
       this.stopwatch.Start()
     }
 
-
     this.retrieveUserName()
-    // setTimeout(() => this.startTimer(), 5000) // delay is because of ad loading
     this.getGame();
 
-    setTimeout(() => {
-      this.isLoaded = true
-    }, 1000)
   }
 
   displayTimer(): string {

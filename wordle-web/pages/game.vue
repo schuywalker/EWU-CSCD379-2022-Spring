@@ -114,9 +114,6 @@
           <v-btn class="ml-2" @click="dialog = true">save my results!</v-btn>
         </v-alert>
       </v-row>
-    <v-card-text style="background-color: grey" class="text-center" >
-      Welcome to Extreme Hard Mode Wordle!!!!!! (Custom Gamemode)<br/><br/>You will receive only 6 attempts to solve this puzzle. The game board will ignore your key presses and only reflect changes once you press guess. If you do not guess the word, you will fail and not receive any further chances.<br/>Thanks for playing!
-    </v-card-text>
       <v-row justify="center">
         <game-board :wordleGame="wordleGame"/>
       </v-row>
@@ -132,9 +129,7 @@ import {Component, Vue} from 'vue-property-decorator'
 import {GameState, WordleGame} from '~/scripts/wordleGame'
 import KeyBoard from '@/components/keyboard.vue'
 import GameBoard from '@/components/game-board.vue'
-import {Word} from '~/scripts/word'
 import {Stopwatch} from '~/scripts/stopwatch'
-// import {route} from ''
 
 @Component({components: {KeyBoard, GameBoard}})
 export default class Game extends Vue {
@@ -142,18 +137,10 @@ export default class Game extends Vue {
   // ? need this for closing button
   dialog: boolean = false
   playerName: string = ''
-  timeInSeconds: number = 0
-  startTime: number = 0
-  endTime: number = 0
-  intervalID: any
   word: string = "xzxzx"
-  gameDate: string = ''
 
   isLoaded: boolean = false
 
-  // @Prop({ required: true })
-
-  // temp :string = this.playerName
   usernameIsGuestAtGameEnd() {
     const temp = this.playerName.toLowerCase()
     return temp === 'guest' || temp === ''
@@ -187,6 +174,7 @@ export default class Game extends Vue {
         this.wasPlayed = game.data.WasPlayed
         this.wordleGame = new WordleGame(this.word)
         this.isLoaded = true;
+        this.stopwatch.Start();
       })
   }
 
@@ -218,7 +206,6 @@ export default class Game extends Vue {
 
   get gameResult() {
     this.stopwatch.Stop()
-    this.timeInSeconds = Math.floor(this.endTime - this.startTime)
     if (this.wordleGame!.state === GameState.Won) {
       if (
         this.playerName.toLocaleLowerCase() !== 'guest' &&
@@ -235,14 +222,6 @@ export default class Game extends Vue {
       }
     }
     return {type: '', text: ''}
-  }
-
-  getLetter(row: number, index: number) {
-    const word: Word = this.wordleGame!.words[row - 1]
-    if (word !== undefined) {
-      return word.letters[index - 1]?.char ?? ''
-    }
-    return ''
   }
 
   retrieveUserName() {

@@ -163,6 +163,8 @@ export default class Game extends Vue {
   word: string = ''
   wasPlayed: boolean = false
 
+  playerGUID : string | undefined;
+
   getGame() {
     this.$axios
       .post('/api/DateWord', {
@@ -179,6 +181,13 @@ export default class Game extends Vue {
   }
 
   mounted() {
+    const playerGUID = localStorage.getItem('playerGUID')
+    if (playerGUID == null) {
+      this.playerGUID = Guid.newGuid()
+      localStorage.setItem('playerGUID', this.playerGUID)
+    } else {
+      this.playerGUID = playerGUID
+    }
     if (!this.stopwatch.isRunning) {
       this.stopwatch.Start()
     }

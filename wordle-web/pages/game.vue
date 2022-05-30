@@ -1,6 +1,6 @@
 <template>
   <v-container fluid fill-height>
-    <v-container v-if="!isLoaded">
+    <v-container v-if="!isLoaded" :key="isLoaded">
       <v-row justify="center">
         <v-card loading>
           <v-card-title class="justify-center">
@@ -23,11 +23,12 @@
             <v-date-picker
               v-model="picker"
               elevation="15"
-              show-current="2022-05-20"
               @change="pickDate()"
             ></v-date-picker>
           </v-menu>
-          <div>{{ picker }}</div>
+          <div>Now playing the Wordle for:
+            <br/>{{ picker }}
+          </div>
         </v-col>
 
         <v-col cols="2" class="mt-0 mb-0 pt-0 pb-0">
@@ -96,7 +97,17 @@
           </v-card-text>
         </v-col>
       </v-row>
-
+      <v-container v-if="wasPlayed">
+        <v-card>
+          <v-card-title>
+            You have already played the word for this day!
+          </v-card-title>
+          <v-card-text>
+            Please select a new day from the calendar or play
+            <v-btn @click="practiceMode=true, getGame()">Practice Mode</v-btn>
+          </v-card-text>
+        </v-card>
+      </v-container>
       <v-row v-if="wordleGame !== null && wordleGame.gameOver" justify="center" class="mt-10">
         <v-alert
           v-if="!usernameIsGuestAtGameEnd() && !dialog"
@@ -130,6 +141,7 @@ import {GameState, WordleGame} from '~/scripts/wordleGame'
 import KeyBoard from '@/components/keyboard.vue'
 import GameBoard from '@/components/game-board.vue'
 import {Stopwatch} from '~/scripts/stopwatch'
+import {WordsService} from "~/scripts/wordsService";
 
 @Component({components: {KeyBoard, GameBoard}})
 export default class Game extends Vue {
@@ -153,29 +165,47 @@ export default class Game extends Vue {
   wordleGame: WordleGame = new WordleGame(this.word)
 
   pickDate() {
-    this.getGame()
-    this.wordleGame = new WordleGame(this.word)
+    const today = new Date(new Date(Date.now()).setHours(17,0,0))
+    const day = new Date(this.picker).getDate() + 1;
+    const selectedDate = new Date(new Date(this.picker).setDate(day));
+
+    if (selectedDate > today) {
+      // Probably a better way to do this
+      window.location.reload();
+    } else {
+      this.getGame()
+      this.wordleGame = new WordleGame(this.word)
+    }
   }
 
   wasPlayed: boolean = false
+  practiceMode: boolean = false;
 
-  playerGUID : string | undefined;
+  playerGUID: string | undefined;
 
   getGame() {
-    this.$axios
-      .post('/api/DateWord', {
-        date: this.picker,
-        playerGuid: this.playerGUID, // "00000000-0000-0000-0000-000000000000",
-      })
-      .then((game) => {
-        console.log(game.data.word);
+    this.isLoaded = false;
+    if (this.practiceMode) {
+      this.word = WordsService.getRandomWord();
+      this.wordleGame = new WordleGame(this.word)
+      this.isLoaded = true;
+      this.stopwatch.Start();
+    } else {
+      this.$axios
+        .post('/api/DateWord', {
+          date: this.picker,
+          playerGuid: this.playerGUID, // "00000000-0000-0000-0000-000000000000",
+        })
+        .then((game) => {
+          console.log(game.data.word);
 
-        this.word = game.data.word
-        this.wasPlayed = game.data.WasPlayed
-        this.wordleGame = new WordleGame(this.word)
-        this.isLoaded = true;
-        this.stopwatch.Start();
-      })
+          this.word = game.data.word
+          this.wasPlayed = game.data.WasPlayed
+          this.wordleGame = new WordleGame(this.word)
+          this.isLoaded = true;
+          this.stopwatch.Start();
+        })
+    }
   }
 
   mounted() {
@@ -201,7 +231,6 @@ export default class Game extends Vue {
 
   resetGame() {
     this.getGame()
-    this.stopwatch.Start()
   }
 
   get gameResult() {

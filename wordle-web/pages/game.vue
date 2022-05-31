@@ -6,7 +6,7 @@
           <v-card-title class="justify-center">
             You're being exploited for ad revenue, please standby...
           </v-card-title>
-          <PrerollAd/>
+          <PrerollAd />
         </v-card>
       </v-row>
     </v-container>
@@ -14,15 +14,25 @@
       <v-row justify="center">
         <v-col cols="5">
           <v-row>
-            <v-btn small color="primary" class="mb-2" @click="practiceMode=true, resetGame()">Practice Mode</v-btn>
+            <v-btn
+              small
+              color="primary"
+              class="mb-2"
+              @click=";(practiceMode = true), resetGame()"
+              >Practice Mode</v-btn
+            >
           </v-row>
           <v-row>
             <v-menu>
               <template #activator="{ on, attrs }">
-                <v-btn small color="primary" class="mb-2" v-bind="attrs" v-on="on"
-                >select date
-                </v-btn
-                >
+                <v-btn
+                  small
+                  color="primary"
+                  class="mb-2"
+                  v-bind="attrs"
+                  v-on="on"
+                  >select date
+                </v-btn>
               </template>
               <v-date-picker
                 v-model="picker"
@@ -31,8 +41,10 @@
               ></v-date-picker>
             </v-menu>
           </v-row>
-          <v-row>Now playing {{ practiceMode ? ":" : "the Wordle for: " }}</v-row>
-          <v-row>{{ practiceMode ? "Practice Mode" : picker }}</v-row>
+          <v-row
+            >Now playing {{ practiceMode ? ':' : 'the Wordle for: ' }}</v-row
+          >
+          <v-row>{{ practiceMode ? 'Practice Mode' : picker }}</v-row>
         </v-col>
 
         <v-col cols="2" class="mt-0 mb-0 pt-0 pb-0">
@@ -92,7 +104,7 @@
       <v-row>
         <v-col cols="3"></v-col>
         <v-col cols="6" class="mt-0 mb-0 pt-0 pb-0">
-          <NotWordleLogo/>
+          <NotWordleLogo />
         </v-col>
         <v-col cols="3">
           <v-card-text align="right">
@@ -108,11 +120,17 @@
           </v-card-title>
           <v-card-text>
             Please select a new day from the calendar or play
-            <v-btn @click="practiceMode=true, resetGame()">Practice Mode</v-btn>
+            <v-btn @click=";(practiceMode = true), resetGame()"
+              >Practice Mode</v-btn
+            >
           </v-card-text>
         </v-card>
       </v-row>
-      <v-row v-else-if="!wasPlayed && wordleGame !== null && wordleGame.gameOver" justify="center" class="mt-10">
+      <v-row
+        v-else-if="!wasPlayed && wordleGame !== null && wordleGame.gameOver"
+        justify="center"
+        class="mt-10"
+      >
         <v-alert
           v-if="!usernameIsGuestAtGameEnd() && !dialog"
           width="80%"
@@ -130,30 +148,30 @@
         </v-alert>
       </v-row>
       <v-row justify="center">
-        <game-board :wordleGame="wordleGame"/>
+        <game-board :wordleGame="wordleGame" />
       </v-row>
       <v-row justify="center">
-        <keyboard :wordleGame="wordleGame"/>
+        <keyboard :wordleGame="wordleGame" />
       </v-row>
     </v-container>
   </v-container>
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator'
-import {GameState, WordleGame} from '~/scripts/wordleGame'
+import { Component, Vue } from 'vue-property-decorator'
+import { GameState, WordleGame } from '~/scripts/wordleGame'
 import KeyBoard from '@/components/keyboard.vue'
 import GameBoard from '@/components/game-board.vue'
-import {Stopwatch} from '~/scripts/stopwatch'
-import {WordsService} from "~/scripts/wordsService";
+import { Stopwatch } from '~/scripts/stopwatch'
+import { WordsService } from '~/scripts/wordsService'
 
-@Component({components: {KeyBoard, GameBoard}})
+@Component({ components: { KeyBoard, GameBoard } })
 export default class Game extends Vue {
   stopwatch: Stopwatch = new Stopwatch()
   // ? need this for closing button
   dialog: boolean = false
   playerName: string = ''
-  word: string = "xzxzx"
+  word: string = 'xzxzx'
 
   isLoaded: boolean = false
 
@@ -171,12 +189,12 @@ export default class Game extends Vue {
   pickDate() {
     // This is gross
     const today = new Date(new Date(Date.now()).setHours(17, 0, 0))
-    const day = new Date(this.picker).getDate() + 1;
-    const selectedDate = new Date(new Date(this.picker).setDate(day));
+    const day = new Date(this.picker).getDate() + 1
+    const selectedDate = new Date(new Date(this.picker).setDate(day))
 
     if (selectedDate > today) {
       // Probably a better way to do this
-      window.location.reload();
+      window.location.reload()
     } else {
       this.getGame()
       this.wordleGame = new WordleGame(this.word)
@@ -184,19 +202,19 @@ export default class Game extends Vue {
   }
 
   wasPlayed: boolean = false
-  practiceMode: boolean = false;
-  posted: boolean = false;
+  practiceMode: boolean = false
+  posted: boolean = false
 
-  playerGUID: string | undefined;
-  gameId: number | undefined;
+  playerGUID: string | undefined
+  gameId: number | undefined
 
   getGame() {
-    this.isLoaded = false;
+    this.isLoaded = false
     if (this.practiceMode) {
-      this.word = WordsService.getRandomWord();
+      this.word = WordsService.getRandomWord()
       this.wordleGame = new WordleGame(this.word)
-      this.isLoaded = true;
-      this.stopwatch.Start();
+      this.isLoaded = true
+      this.stopwatch.Start()
     } else {
       this.$axios
         .post('/api/DateWord/CreateGame', {
@@ -204,18 +222,18 @@ export default class Game extends Vue {
           playerGuid: this.playerGUID, // "00000000-0000-0000-0000-000000000000",
         })
         .then((game) => {
-          console.log(game.data.word);
+          console.log(game.data.word)
 
           this.word = game.data.word
-          console.log(game.data);
+          console.log(game.data)
           this.wasPlayed = game.data.wasPlayed
-          this.gameId = game.data.gameId;
+          this.gameId = game.data.gameId
           this.wordleGame = new WordleGame(this.word)
           if (this.wasPlayed) {
             this.wordleGame.state = GameState.Won
           }
-          this.isLoaded = true;
-          this.stopwatch.Start();
+          this.isLoaded = true
+          this.stopwatch.Start()
         })
     }
   }
@@ -233,8 +251,7 @@ export default class Game extends Vue {
     }
 
     this.retrieveUserName()
-    this.getGame();
-
+    this.getGame()
   }
 
   displayTimer(): string {
@@ -243,8 +260,8 @@ export default class Game extends Vue {
 
   resetGame() {
     this.stopwatch.Stop()
-    this.posted = false;
-    this.wasPlayed = false;
+    this.posted = false
+    this.wasPlayed = false
     this.getGame()
   }
 
@@ -257,7 +274,7 @@ export default class Game extends Vue {
       ) {
         this.endGameSave()
       }
-      return {type: 'success', text: 'You won! :^)'}
+      return { type: 'success', text: 'You won! :^)' }
     }
     if (this.wordleGame.state === GameState.Lost) {
       return {
@@ -265,7 +282,7 @@ export default class Game extends Vue {
         text: `\t\tYou lost... :^( The word was ${this.word} \nWould you like to make a profile and save your results?`,
       }
     }
-    return {type: '', text: ''}
+    return { type: '', text: '' }
   }
 
   retrieveUserName() {
@@ -285,7 +302,7 @@ export default class Game extends Vue {
   }
 
   endGameSave() {
-    console.log("Posting")
+    console.log('Posting')
     console.log(this.posted)
     if (!this.posted) {
       this.$axios.post('/api/Players', {
@@ -299,21 +316,23 @@ export default class Game extends Vue {
         attempts: this.wordleGame.words.length,
         seconds: Math.round(this.stopwatch.currentTime / 1000),
       })
-      this.posted = true;
+      this.posted = true
     }
 
     console.log(this.posted)
   }
-
 }
 
 class Guid {
   static newGuid() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-      const r = Math.random() * 16 | 0;
-      const v = c === 'x' ? r : (r & 0x3 | 0x8);
-      return v.toString(16);
-    });
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+      /[xy]/g,
+      function (c) {
+        const r = (Math.random() * 16) | 0
+        const v = c === 'x' ? r : (r & 0x3) | 0x8
+        return v.toString(16)
+      }
+    )
   }
 }
 </script>

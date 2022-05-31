@@ -23,14 +23,14 @@
       </v-card-text>
 
       <v-card-actions>
-        <v-btn color="primary" @click="getAllPlayers"> Get All Players </v-btn>
+        <v-btn class="ma-1" color="primary" @click="getAllPlayers"> Get All Players </v-btn>
         <v-spacer />
 <!--        <v-btn color="primary" @click="getTop10Players">-->
 <!--          Get Top 10 Players-->
 <!--        </v-btn>-->
-<!--        <v-btn nuxt to="/dailyLeaderboard">-->
-<!--          Go To Daily Leaderboard-->
-<!--        </v-btn>-->
+        <v-btn class="ma-1" primary" nuxt to="/dailyLeaderboard">
+          Go To Daily Leaderboard
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-container>
@@ -54,6 +54,7 @@ export default class leaderboard extends Vue {
       this.players = response.data
     })
   }
+
   //
   // getTop10Players() {
   //   this.title = 'Top 10 Players'

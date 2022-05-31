@@ -13,22 +13,26 @@
     <v-container v-else>
       <v-row justify="center">
         <v-col cols="5">
-          <v-menu>
-            <template #activator="{ on, attrs }">
-              <v-btn small color="primary" v-bind="attrs" v-on="on"
-              >select date
-              </v-btn
-              >
-            </template>
-            <v-date-picker
-              v-model="picker"
-              elevation="15"
-              @change="pickDate()"
-            ></v-date-picker>
-          </v-menu>
-          <div>Now playing the Wordle for:
-            <br/>{{ picker }}
-          </div>
+          <v-row>
+            <v-btn small color="primary" class="mb-2" @click="practiceMode=true, resetGame()">Practice Mode</v-btn>
+          </v-row>
+          <v-row>
+            <v-menu>
+              <template #activator="{ on, attrs }">
+                <v-btn small color="primary" class="mb-2" v-bind="attrs" v-on="on"
+                >select date
+                </v-btn
+                >
+              </template>
+              <v-date-picker
+                v-model="picker"
+                elevation="15"
+                @change="pickDate()"
+              ></v-date-picker>
+            </v-menu>
+          </v-row>
+          <v-row>Now playing {{ practiceMode ? ":" : "the Wordle for: " }}</v-row>
+          <v-row>{{ practiceMode ? "Practice Mode" : picker }}</v-row>
         </v-col>
 
         <v-col cols="2" class="mt-0 mb-0 pt-0 pb-0">
@@ -104,7 +108,7 @@
           </v-card-title>
           <v-card-text>
             Please select a new day from the calendar or play
-            <v-btn @click="practiceMode=true, getGame()">Practice Mode</v-btn>
+            <v-btn @click="practiceMode=true, resetGame()">Practice Mode</v-btn>
           </v-card-text>
         </v-card>
       </v-row>
@@ -165,6 +169,7 @@ export default class Game extends Vue {
   wordleGame: WordleGame = new WordleGame(this.word)
 
   pickDate() {
+    // This is gross
     const today = new Date(new Date(Date.now()).setHours(17, 0, 0))
     const day = new Date(this.picker).getDate() + 1;
     const selectedDate = new Date(new Date(this.picker).setDate(day));
@@ -206,6 +211,9 @@ export default class Game extends Vue {
           this.wasPlayed = game.data.wasPlayed
           this.gameId = game.data.gameId;
           this.wordleGame = new WordleGame(this.word)
+          if (this.wasPlayed) {
+            this.wordleGame.state = GameState.Won
+          }
           this.isLoaded = true;
           this.stopwatch.Start();
         })
@@ -236,6 +244,7 @@ export default class Game extends Vue {
   resetGame() {
     this.stopwatch.Stop()
     this.posted = false;
+    this.wasPlayed = false;
     this.getGame()
   }
 

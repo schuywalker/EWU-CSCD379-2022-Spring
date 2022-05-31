@@ -1,7 +1,7 @@
 <template>
-  <v-container>
+  <v-container class="pa-2">
     <v-row justify="center" class="ma-3">
-      <v-card class="pa-4" max-width="85%">
+      <v-card class="pa-4">
         <h2>Thank you for playing our 'Definitely Not Wordle' game!</h2>
         <br />
         <h5>

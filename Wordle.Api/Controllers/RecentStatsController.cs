@@ -16,8 +16,8 @@ public class RecentStatsController : ControllerBase
         _service = service;
     }
 
-    [HttpGet] //TODO Cant use FromBody in HttpGet route
-    public IEnumerable<RecentStats> Get([FromBody] int playerId)
+    [HttpPost]
+    public IEnumerable<RecentStats> Get([FromBody] string playerId)
     {
         return _service.GetRecentScoreStats(playerId);
 

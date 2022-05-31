@@ -12,7 +12,7 @@ namespace Wordle.Api.Services
 
         private readonly AppDbContext _context;
 
-        public IEnumerable<RecentStats> GetRecentScoreStats(int PlayerId)
+        public IEnumerable<RecentStats> GetRecentScoreStats(string PlayerId)
         {
             List<RecentStats> recents = new();
             for(int i = 10; i >=0; i--)
@@ -35,7 +35,7 @@ namespace Wordle.Api.Services
 
                 double averageGuesses = oneGuess + twoGuess+ threeGuess + fourGuess + fiveGuess + sixGuess / 6;
 
-                bool wonDay = daysGames.Any(x=>x.PlayerId==PlayerId &&
+                bool wonDay = daysGames.Any(x=>x.Player.Guid == new Guid(PlayerId) &&
                                             x.GameType == Game.GameTypeEnum.PlayedWordOfTheDay);
 
                 double secondsPlayed = 0;

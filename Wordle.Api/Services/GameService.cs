@@ -38,7 +38,8 @@ namespace Wordle.Api.Services
                     .Include(x => x.Guesses)
                     .Include(x => x.Word)
                     .FirstOrDefault(x => x.PlayerId == player.PlayerId &&
-                                         x.GameType == GameTypeEnum.WordOfTheDay &&
+                                         (x.GameType == GameTypeEnum.WordOfTheDay ||
+                                         x.GameType == GameTypeEnum.PlayedWordOfTheDay) &&
                                          x.WordDate == date.Value.Date);
                 if (existingGame is not null)
                 {
@@ -70,13 +71,26 @@ namespace Wordle.Api.Services
 
         }
 
-        public void FinishGame(int gameId)
+        public void FinishGame(int gameId, Guid playerGuid, int seconds, int attempts)
         {
             var game = _context.Games
-                .FirstOrDefault(x => x.GameId == gameId);
-            if (game is null) throw new ArgumentException("Game does not exist");
+                .FirstOrDefault(x => x.GameId == gameId &&
+                                x.Player.Guid == playerGuid);
+            if (game is null) throw new ArgumentException("Game does not exist for that player");
+
+            if(game.GameType == GameTypeEnum.WordOfTheDay)
+            {
+                game.GameType = GameTypeEnum.PlayedWordOfTheDay;
+            }
 
             game.DateEnded = DateTime.UtcNow;
+            game.Seconds = seconds;
+            List<Guess> guesses = new();
+            for(int i = 0; i < attempts; i++)
+            {
+                guesses.Add(new Guess());
+            }
+
             _context.SaveChanges();
         }
 

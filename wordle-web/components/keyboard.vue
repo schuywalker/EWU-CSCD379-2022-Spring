@@ -204,10 +204,10 @@ export default class KeyBoard extends Vue {
   guessWord() {
     if (
       this.wordleGame.currentWord.length ===
-      this.wordleGame.currentWord.maxLetters
+      this.wordleGame.currentWord.maxLetters &&
+      !this.wordleGame.currentWord.text.includes('?')
     ) {
       this.wordleGame.submitWord()
-      // this.wordleGame.currentWord
       this.candidatesArray = WordsService.validWords('')
       this.render = false
     }

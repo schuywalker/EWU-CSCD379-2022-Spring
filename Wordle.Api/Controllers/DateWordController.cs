@@ -21,16 +21,33 @@ public class DateWordController : Controller
     }
 
     [HttpPost]
+    [Route("[action]")]
     public GameDto CreateGame([FromBody] CreateGameDto newGame)
     {
         var game = _gameService.CreateGame(new Guid(newGame.PlayerGuid), GameTypeEnum.WordOfTheDay, newGame.Date);
         return new GameDto(game);
     }
 
+    [HttpPost]
+    [Route("[action]")]
+    public IActionResult FinishGame([FromBody] FinishGameDto finishedGame)
+    {
+        _gameService.FinishGame(finishedGame.GameId, finishedGame.PlayerGuid, finishedGame.Seconds, finishedGame.Attempts);
+        return Ok();
+    }
+
     public class CreateGameDto
     {
         public DateTime? Date { get; set; }
         public string PlayerGuid { get; set; } = null!;
+    }
+
+    public class FinishGameDto
+    {
+        public int GameId { get; set; }
+        public Guid PlayerGuid { get; set; }
+        public int Seconds { get; set; }
+        public int Attempts { get; set; }
     }
 }
 

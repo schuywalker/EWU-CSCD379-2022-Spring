@@ -13,7 +13,7 @@ namespace Wordle.Api.Dtos
         {
             Word = game.Word.Value;
             GameId = game.GameId;
-            WasPlayed = game.DateEnded.HasValue;
+            WasPlayed = game.GameType == Game.GameTypeEnum.PlayedWordOfTheDay;
             StartDate = game.DateStarted;
         }
     }

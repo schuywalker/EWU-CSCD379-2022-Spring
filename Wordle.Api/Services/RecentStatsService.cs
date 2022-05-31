@@ -18,7 +18,7 @@ namespace Wordle.Api.Services
             for(int i = 10; i >=0; i--)
             {
                 DateTime day = DateTime.Now.AddDays(i);
-                var daysGames = _context.Games
+                var daysGames = _context.Games.Where(g=>g.GameType == Game.GameTypeEnum.PlayedWordOfTheDay || g.GameType == Game.GameTypeEnum.WordOfTheDay)
                 .Where(g => g.WordId == _context.DateWords.Where(dw => dw.Date == day).Select(dw => dw.WordId).First()).ToList();
 
                 int gameWins = daysGames.Where(g => g.Guesses.Count > 0 && g.Guesses.Count != 7).Count();
@@ -35,7 +35,8 @@ namespace Wordle.Api.Services
 
                 double averageGuesses = oneGuess + twoGuess+ threeGuess + fourGuess + fiveGuess + sixGuess / 6;
 
-                bool wonDay = daysGames.Any(g => g.PlayerId == PlayerId);
+                bool wonDay = daysGames.Any(x=>x.PlayerId==PlayerId &&
+                                            x.GameType == Game.GameTypeEnum.PlayedWordOfTheDay);
 
                 //TODO Migrate time to game
                 int averageTime = (int)Math.Floor(1.0/daysGames.Count);

@@ -97,7 +97,7 @@
           </v-card-text>
         </v-col>
       </v-row>
-      <v-container v-if="wasPlayed">
+      <v-row v-if="wasPlayed" justify="center" class="mt-10">
         <v-card>
           <v-card-title>
             You have already played the word for this day!
@@ -107,8 +107,8 @@
             <v-btn @click="practiceMode=true, getGame()">Practice Mode</v-btn>
           </v-card-text>
         </v-card>
-      </v-container>
-      <v-row v-if="wordleGame !== null && wordleGame.gameOver" justify="center" class="mt-10">
+      </v-row>
+      <v-row v-else-if="!wasPlayed && wordleGame !== null && wordleGame.gameOver" justify="center" class="mt-10">
         <v-alert
           v-if="!usernameIsGuestAtGameEnd() && !dialog"
           width="80%"
@@ -165,7 +165,7 @@ export default class Game extends Vue {
   wordleGame: WordleGame = new WordleGame(this.word)
 
   pickDate() {
-    const today = new Date(new Date(Date.now()).setHours(17,0,0))
+    const today = new Date(new Date(Date.now()).setHours(17, 0, 0))
     const day = new Date(this.picker).getDate() + 1;
     const selectedDate = new Date(new Date(this.picker).setDate(day));
 
@@ -180,8 +180,10 @@ export default class Game extends Vue {
 
   wasPlayed: boolean = false
   practiceMode: boolean = false;
+  posted: boolean = false;
 
   playerGUID: string | undefined;
+  gameId: number | undefined;
 
   getGame() {
     this.isLoaded = false;
@@ -192,7 +194,7 @@ export default class Game extends Vue {
       this.stopwatch.Start();
     } else {
       this.$axios
-        .post('/api/DateWord', {
+        .post('/api/DateWord/CreateGame', {
           date: this.picker,
           playerGuid: this.playerGUID, // "00000000-0000-0000-0000-000000000000",
         })
@@ -200,7 +202,9 @@ export default class Game extends Vue {
           console.log(game.data.word);
 
           this.word = game.data.word
-          this.wasPlayed = game.data.WasPlayed
+          console.log(game.data);
+          this.wasPlayed = game.data.wasPlayed
+          this.gameId = game.data.gameId;
           this.wordleGame = new WordleGame(this.word)
           this.isLoaded = true;
           this.stopwatch.Start();
@@ -230,12 +234,14 @@ export default class Game extends Vue {
   }
 
   resetGame() {
+    this.stopwatch.Stop()
+    this.posted = false;
     this.getGame()
   }
 
   get gameResult() {
     this.stopwatch.Stop()
-    if (this.wordleGame!.state === GameState.Won) {
+    if (this.wordleGame.state === GameState.Won) {
       if (
         this.playerName.toLocaleLowerCase() !== 'guest' &&
         this.playerName !== ''
@@ -244,7 +250,7 @@ export default class Game extends Vue {
       }
       return {type: 'success', text: 'You won! :^)'}
     }
-    if (this.wordleGame!.state === GameState.Lost) {
+    if (this.wordleGame.state === GameState.Lost) {
       return {
         type: 'error',
         text: `\t\tYou lost... :^( The word was ${this.word} \nWould you like to make a profile and save your results?`,
@@ -264,17 +270,30 @@ export default class Game extends Vue {
 
   setUserName(userName: string) {
     localStorage.setItem('userName', userName)
-    if (this.wordleGame!.state === GameState.Won) {
+    if (this.wordleGame.state === GameState.Won) {
       this.endGameSave()
     }
   }
 
   endGameSave() {
-    this.$axios.post('/api/Players', {
-      name: this.playerName,
-      attempts: this.wordleGame!.words.length,
-      seconds: Math.round(this.stopwatch.currentTime / 1000),
-    })
+    console.log("Posting")
+    console.log(this.posted)
+    if (!this.posted) {
+      this.$axios.post('/api/Players', {
+        name: this.playerName,
+        attempts: this.wordleGame.words.length,
+        seconds: Math.round(this.stopwatch.currentTime / 1000),
+      })
+      this.$axios.post('/api/DateWord/FinishGame', {
+        playerGuid: this.playerGUID,
+        gameId: this.gameId,
+        attempts: this.wordleGame.words.length,
+        seconds: Math.round(this.stopwatch.currentTime / 1000),
+      })
+      this.posted = true;
+    }
+
+    console.log(this.posted)
   }
 
 }

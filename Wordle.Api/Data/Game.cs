@@ -5,9 +5,10 @@ namespace Wordle.Api.Data;
 
 public class Game
 {
-    public enum GameTypeEnum{
+    public enum GameTypeEnum {
         Random = 1,
         WordOfTheDay = 2,
+        PlayedWordOfTheDay = 3,
     }
     
     public int GameId { get; set; }
@@ -20,6 +21,7 @@ public class Game
     public IList<Guess> Guesses { get; set; } = null!;
     public GameTypeEnum GameType { get; set; } 
     public DateTime? WordDate { get; set; }
+    public int Seconds { get; set; }
 }
 
 public class GameConfiguration : IEntityTypeConfiguration<Game>

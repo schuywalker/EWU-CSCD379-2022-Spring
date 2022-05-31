@@ -38,8 +38,9 @@ namespace Wordle.Api.Services
                 bool wonDay = daysGames.Any(x=>x.PlayerId==PlayerId &&
                                             x.GameType == Game.GameTypeEnum.PlayedWordOfTheDay);
 
-                //TODO Migrate time to game
-                int averageTime = (int)Math.Floor(1.0/daysGames.Count);
+                double secondsPlayed = 0;
+                daysGames.ForEach(x => secondsPlayed += x.Seconds);
+                int averageTime = (int)Math.Floor(secondsPlayed / daysGames.Count);
 
                 recents.Add(new RecentStats(day, daysGames.Count, averageGuesses, averageTime, winRate, wonDay));
             }

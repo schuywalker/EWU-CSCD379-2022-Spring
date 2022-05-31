@@ -9,26 +9,34 @@
       </v-card-text>
       <v-card-text>
         <v-row>
-        <v-col cols="3" md="2" sm="2">Name</v-col>
-        <v-col cols="3" style="text-align: center"># Games</v-col>
-        <v-col cols="3" style="text-align: center">Avg. Attempts</v-col>
-        <v-col cols="3" style="text-align: center">Avg. Seconds</v-col>
+          <v-col cols="3" md="2" sm="2">Name</v-col>
+          <v-col cols="3" style="text-align: center"># Games</v-col>
+          <v-col cols="3" style="text-align: center">Avg. Attempts</v-col>
+          <v-col cols="3" style="text-align: center">Avg. Seconds</v-col>
         </v-row>
         <v-row v-for="(player, playerId) in players" :key="playerId">
           <v-col cols="3" md="2" sm="2">{{ player.name }}</v-col>
-          <v-col cols="3" style="text-align: center">{{ player.gameCount }}</v-col>
-          <v-col cols="3" style="text-align: center">{{ player.averageAttempts.toFixed(2) }}</v-col>
-          <v-col cols="3" style="text-align: center">{{ player.averageSecondsPerGame }}</v-col>
+          <v-col cols="3" style="text-align: center">{{
+            player.gameCount
+          }}</v-col>
+          <v-col cols="3" style="text-align: center">{{
+            player.averageAttempts.toFixed(2)
+          }}</v-col>
+          <v-col cols="3" style="text-align: center">{{
+            player.averageSecondsPerGame
+          }}</v-col>
         </v-row>
       </v-card-text>
 
       <v-card-actions>
-        <v-btn class="ma-1" color="primary" @click="getAllPlayers"> Get All Players </v-btn>
+        <v-btn class="ma-1" color="primary" @click="getAllPlayers">
+          Get All Players
+        </v-btn>
         <v-spacer />
-<!--        <v-btn color="primary" @click="getTop10Players">-->
-<!--          Get Top 10 Players-->
-<!--        </v-btn>-->
-        <v-btn class="ma-1" primary" nuxt to="/dailyLeaderboard">
+        <!--        <v-btn color="primary" @click="getTop10Players">-->
+        <!--          Get Top 10 Players-->
+        <!--        </v-btn>-->
+        <v-btn class="ma-1" color="primary" nuxt to="/dailyLeaderboard">
           Go To Daily Leaderboard
         </v-btn>
       </v-card-actions>

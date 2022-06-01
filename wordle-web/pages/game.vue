@@ -6,7 +6,7 @@
           <v-card-title class="justify-center">
             You're being exploited for ad revenue, please standby...
           </v-card-title>
-          <PrerollAd />
+          <PrerollAd/>
         </v-card>
       </v-row>
     </v-container>
@@ -19,7 +19,8 @@
               color="primary"
               class="mb-2"
               @click=";(practiceMode = true), resetGame()"
-              >Practice Mode</v-btn
+            >Practice Mode
+            </v-btn
             >
           </v-row>
           <v-row>
@@ -31,7 +32,7 @@
                   class="mb-2"
                   v-bind="attrs"
                   v-on="on"
-                  >select date
+                >select date
                 </v-btn>
               </template>
               <v-date-picker
@@ -42,7 +43,8 @@
             </v-menu>
           </v-row>
           <v-row
-            >Now playing {{ practiceMode ? ':' : 'the Wordle for: ' }}</v-row
+          >Now playing {{ practiceMode ? ':' : 'the Wordle for: ' }}
+          </v-row
           >
           <v-row>{{ practiceMode ? 'Practice Mode' : picker }}</v-row>
         </v-col>
@@ -104,7 +106,7 @@
       <v-row>
         <v-col cols="3"></v-col>
         <v-col cols="6" class="mt-0 mb-0 pt-0 pb-0">
-          <NotWordleLogo />
+          <NotWordleLogo/>
         </v-col>
         <v-col cols="3">
           <v-card-text align="right">
@@ -121,7 +123,8 @@
           <v-card-text>
             Please select a new day from the calendar or play
             <v-btn @click=";(practiceMode = true), resetGame()"
-              >Practice Mode</v-btn
+            >Practice Mode
+            </v-btn
             >
           </v-card-text>
         </v-card>
@@ -148,24 +151,24 @@
         </v-alert>
       </v-row>
       <v-row justify="center">
-        <game-board :wordleGame="wordleGame" />
+        <game-board :wordleGame="wordleGame"/>
       </v-row>
       <v-row justify="center">
-        <keyboard :wordleGame="wordleGame" />
+        <keyboard :wordleGame="wordleGame"/>
       </v-row>
     </v-container>
   </v-container>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import { GameState, WordleGame } from '~/scripts/wordleGame'
+import {Component, Vue} from 'vue-property-decorator'
+import {GameState, WordleGame} from '~/scripts/wordleGame'
 import KeyBoard from '@/components/keyboard.vue'
 import GameBoard from '@/components/game-board.vue'
-import { Stopwatch } from '~/scripts/stopwatch'
-import { WordsService } from '~/scripts/wordsService'
+import {Stopwatch} from '~/scripts/stopwatch'
+import {WordsService} from '~/scripts/wordsService'
 
-@Component({ components: { KeyBoard, GameBoard } })
+@Component({components: {KeyBoard, GameBoard}})
 export default class Game extends Vue {
   stopwatch: Stopwatch = new Stopwatch()
   // ? need this for closing button
@@ -274,15 +277,21 @@ export default class Game extends Vue {
       ) {
         this.endGameSave()
       }
-      return { type: 'success', text: 'You won! :^)' }
+      return {type: 'success', text: 'You won! :^)'}
     }
     if (this.wordleGame.state === GameState.Lost) {
+      if (
+        this.playerName.toLocaleLowerCase() !== 'guest' &&
+        this.playerName !== ''
+      ) {
+        this.endGameSave()
+      }
       return {
         type: 'error',
         text: `\t\tYou lost... :^( The word was ${this.word} \nWould you like to make a profile and save your results?`,
       }
     }
-    return { type: '', text: '' }
+    return {type: '', text: ''}
   }
 
   retrieveUserName() {

@@ -1,4 +1,6 @@
-﻿using Wordle.Api.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Wordle.Api.Data;
+
 using Wordle.Api.Dtos;
 
 namespace Wordle.Api.Services
@@ -15,16 +17,21 @@ namespace Wordle.Api.Services
         public IEnumerable<RecentStats> GetRecentScoreStats(Guid PlayerId)
         {
             List<RecentStats> recents = new();
-            for(int i = 10; i >=0; i--)
+            for(int i = 9; i >=0; i--)
             {
-                DateTime day = DateTime.Now.AddDays(-i);
-                var daysGames = _context.Games.Where(g=>g.GameType == Game.GameTypeEnum.PlayedWordOfTheDay || g.GameType == Game.GameTypeEnum.WordOfTheDay)
-                .Where(g => g.WordId == _context.DateWords.Where(dw => dw.Date == day).Select(dw => dw.WordId).First()).ToList();
-
-                int gameWins = daysGames.Where(g => g.Guesses.Count > 0 && g.Guesses.Count != 7).Count();
+                DateTime day = DateTime.Now.AddDays(-i).Date;
+                var wordId = _context.DateWords.Where(dw => dw.Date == day).Select(dw => dw.WordId).FirstOrDefault();
+                var daysGames = _context.Games.Include(g=>g.Guesses).Include(g=>g.Player).Where(g => (g.GameType == Game.GameTypeEnum.PlayedWordOfTheDay || g.GameType == Game.GameTypeEnum.WordOfTheDay) && g.WordId == wordId).ToList();
+                 
+                int gameWins = daysGames.Where(g => g.Guesses.Count > 0 && g.Guesses.Count < 7).Count();
                 int gameFails = daysGames.Where(g => g.Guesses.Count == 7).Count();
 
-                double winRate = gameWins / 1; // gameFails;
+                double winRate = 0;
+                if (gameFails != 0)
+                {
+                    winRate = gameWins / gameFails;
+                }
+                
 
                 int oneGuess = daysGames.Where(g => g.Guesses.Count == 1).Count();
                 int twoGuess = daysGames.Where(g => g.Guesses.Count == 2).Count();
@@ -33,7 +40,7 @@ namespace Wordle.Api.Services
                 int fiveGuess = daysGames.Where(g => g.Guesses.Count == 5).Count();
                 int sixGuess = daysGames.Where(g => g.Guesses.Count == 6).Count();
 
-                double averageGuesses = oneGuess + twoGuess+ threeGuess + fourGuess + fiveGuess + sixGuess / 6;
+                double averageGuesses = oneGuess + twoGuess + threeGuess + fourGuess + fiveGuess + sixGuess / 6.0;
 
                 bool wonDay = daysGames.Any(x=>x.Player.Guid == PlayerId &&
                                             x.GameType == Game.GameTypeEnum.PlayedWordOfTheDay);

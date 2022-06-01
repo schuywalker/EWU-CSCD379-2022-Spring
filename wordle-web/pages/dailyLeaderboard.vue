@@ -1,10 +1,10 @@
 <template>
   <v-container fluid fill-height justify-center>
-    <v-card>
+    <v-card  v-if="showStats" >
       <v-card-title class="display-3 justify-center">
         Leader Board
       </v-card-title>
-      <v-container v-for="dayStats in recentStats" :key="dayStats">
+      <v-container v-for="(dayStats, index) in recentStats" :key="index">
         <day-stats :dateStats="dayStats"></day-stats>
       </v-container>
     </v-card>
@@ -16,9 +16,11 @@ import {Component, Vue} from 'vue-property-decorator'
 
 @Component({})
 export default class PrevDayStats extends Vue {
-  recentStats :any = []
+  recentStats: any | null = null;
 
   playerGuid: string = ''
+  showStats: boolean =false;
+
   mounted() {
     const playerGUID = localStorage.getItem('playerGUID')
     if (playerGUID == null) {
@@ -29,18 +31,25 @@ export default class PrevDayStats extends Vue {
     }
     console.log(this.playerGuid)
     this.$axios
-      .post('/api/RecentStats',{
+      .post('/api/RecentStats', {
         guid: this.playerGuid
       })
       .then((response) => {
         this.recentStats = response.data
-        console.log(response)
-      }).catch((error)=>console.log(error));
+        this.showStats = true;
+        // return response.data
+      }).catch((error) => console.log(error));
+    // this.getData();
+  }
+
+  async getData(){
+   // await
   }
 }
+
 class Guid {
   static newGuid() {
-      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
       /[xy]/g,
       function (c) {
         const r = (Math.random() * 16) | 0

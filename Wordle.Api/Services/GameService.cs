@@ -88,8 +88,9 @@ namespace Wordle.Api.Services
             List<Guess> guesses = new();
             for(int i = 0; i < attempts; i++)
             {
-                guesses.Add(new Guess());
+                guesses.Add(new Guess() { Value="aaaaa"});
             }
+            game.Guesses = guesses;
 
             _context.SaveChanges();
         }

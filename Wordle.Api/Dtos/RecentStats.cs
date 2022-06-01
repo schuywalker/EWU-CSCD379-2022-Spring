@@ -1,12 +1,12 @@
 namespace Wordle.Api.Dtos;
 public class RecentStats
 {
-    private DateTime day { get; set; }
-    private double averageGuesses { get; set; }
-    private int averageTime { get; set; }
-    private double winRate { get; set; }
-    private bool wonDay { get; set; }
-    private int plays { get; set; }
+    public DateTime day { get; set; }
+    public double averageGuesses { get; set; }
+    public int averageTime { get; set; }
+    public double winRate { get; set; }
+    public bool wonDay { get; set; }
+    public int plays { get; set; }
 
     public RecentStats(DateTime day, int plays, double averageGuesses, int averageTime, double winRate, bool wonDay)
     {

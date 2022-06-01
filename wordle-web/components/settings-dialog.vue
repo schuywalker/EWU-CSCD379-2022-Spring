@@ -74,6 +74,8 @@ export default class SettingsDialog extends Vue {
   defaultDarkTheme = this.$vuetify.theme.themes.dark
   defaultLightTheme = this.$vuetify.theme.themes.light
 
+  theme: string = "default";
+
   toggleDialog() {
     this.dialog = !this.dialog
   }
@@ -98,6 +100,7 @@ export default class SettingsDialog extends Vue {
     }
     this.$vuetify.theme.themes.dark = purpleTheme
     this.$vuetify.theme.themes.light = purpleTheme
+    this.theme = "purple"
   }
 
   orangeTheme() {
@@ -112,6 +115,7 @@ export default class SettingsDialog extends Vue {
     }
     this.$vuetify.theme.themes.dark = orangeTheme
     this.$vuetify.theme.themes.light = orangeTheme
+    this.theme="orange"
   }
 
   naturalTheme() {
@@ -126,11 +130,13 @@ export default class SettingsDialog extends Vue {
     }
     this.$vuetify.theme.themes.dark = naturalTheme
     this.$vuetify.theme.themes.light = naturalTheme
+    this.theme="natural"
   }
 
   defaultTheme() {
     this.$vuetify.theme.themes.dark = this.defaultDarkTheme
     this.$vuetify.theme.themes.light = this.defaultLightTheme
+    this.theme="default"
   }
 }
 </script>

@@ -94,7 +94,7 @@
                 <v-btn
                   color="blue darken-1"
                   text
-                  @click=";(dialog = false), setUserName(playerName)"
+                  @click=";(dialog = false), setUserName(playerName), endGameSave()"
                 >
                   Save
                 </v-btn>
@@ -305,27 +305,26 @@ export default class Game extends Vue {
 
   setUserName(userName: string) {
     localStorage.setItem('userName', userName)
-    if (this.wordleGame.state === GameState.Won) {
-      this.endGameSave()
-    }
   }
 
   endGameSave() {
-    console.log('Posting')
-    console.log(this.posted)
-    if (!this.posted) {
-      this.$axios.post('/api/Players', {
-        name: this.playerName,
-        attempts: this.wordleGame.words.length,
-        seconds: Math.round(this.stopwatch.currentTime / 1000),
-      })
-      this.$axios.post('/api/DateWord/FinishGame', {
-        playerGuid: this.playerGUID,
-        gameId: this.gameId,
-        attempts: this.wordleGame.words.length,
-        seconds: Math.round(this.stopwatch.currentTime / 1000),
-      })
-      this.posted = true
+    if (this.wordleGame.state === GameState.Won || this.wordleGame.state == GameState.Lost) {
+      console.log('Posting')
+      console.log(this.posted)
+      if (!this.posted) {
+        this.$axios.post('/api/Players', {
+          name: this.playerName,
+          attempts: this.wordleGame.words.length,
+          seconds: Math.round(this.stopwatch.currentTime / 1000),
+        })
+        this.$axios.post('/api/DateWord/FinishGame', {
+          playerGuid: this.playerGUID,
+          gameId: this.gameId,
+          attempts: this.wordleGame.words.length,
+          seconds: Math.round(this.stopwatch.currentTime / 1000),
+        })
+        this.posted = true
+      }
     }
 
     console.log(this.posted)

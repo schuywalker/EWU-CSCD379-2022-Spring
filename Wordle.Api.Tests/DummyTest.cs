@@ -56,32 +56,32 @@ public class DummyTest : DatabaseBaseTests
     }
 
     [TestMethod]
-    public void RetrievePlayerAndGameInfo()
+    public async void RetrievePlayerAndGameInfo()
     {
-        //var player = new Player { Name = "Inigo Montoya" };
-        //var word = new Word { Value = "Hello" };
-        //var word2 = new Word { Value = "World" };
+        var player = new Player { Name = "Inigo Montoya" };
+        var word = new Word { Value = "Hello" };
+        var word2 = new Word { Value = "World" };
 
-        //using var context = new TestAppDbContext(Options);
-        //context.Players.Add(player);
-        //context.Words.Add(word);
-        //context.Words.Add(word2);
-        //await context.SaveChangesAsync();
+        using var context = new TestAppDbContext(Options);
+        context.Players.Add(player);
+        context.Words.Add(word);
+        context.Words.Add(word2);
+        await context.SaveChangesAsync();
 
-        //using var context2 = new TestAppDbContext(Options);
-        //context2.Games.Add(new Game { PlayerId = player.PlayerId, WordId = word.WordId });
-        //context2.Games.Add(new Game { PlayerId = player.PlayerId, WordId = word2.WordId });
-        //await context2.SaveChangesAsync();
+        using var context2 = new TestAppDbContext(Options);
+        context2.Games.Add(new Game { PlayerId = player.PlayerId, WordId = word.WordId });
+        context2.Games.Add(new Game { PlayerId = player.PlayerId, WordId = word2.WordId });
+        await context2.SaveChangesAsync();
 
-        //using var context3 = new TestAppDbContext(Options);
-        //var fetchedPlayer = await context3.Players
-        //    .Include(p => p.Games)
-        //        .ThenInclude(g => g.Word).SingleAsync(p => p.PlayerId == player.PlayerId);
+        using var context3 = new TestAppDbContext(Options);
+        var fetchedPlayer = await context3.Players
+            .Include(p => p.Games)
+                .ThenInclude(g => g.Word).SingleAsync(p => p.PlayerId == player.PlayerId);
 
-        //Assert.AreEqual(2, fetchedPlayer.Games.Count);
-        //Assert.IsNotNull(fetchedPlayer.Games[0].Word);
-        //Assert.AreEqual("Hello", fetchedPlayer.Games[0].Word.Value);
-        //Assert.IsNotNull(fetchedPlayer.Games[1].Word);
-        //Assert.AreEqual("World", fetchedPlayer.Games[1].Word.Value);
+        Assert.AreEqual(2, fetchedPlayer.Games.Count);
+        Assert.IsNotNull(fetchedPlayer.Games[0].Word);
+        Assert.AreEqual("Hello", fetchedPlayer.Games[0].Word.Value);
+        Assert.IsNotNull(fetchedPlayer.Games[1].Word);
+        Assert.AreEqual("World", fetchedPlayer.Games[1].Word.Value);
     }
 }

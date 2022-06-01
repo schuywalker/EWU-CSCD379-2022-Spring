@@ -22,6 +22,7 @@ public class Game
     public GameTypeEnum GameType { get; set; } 
     public DateTime? WordDate { get; set; }
     public int Seconds { get; set; }
+    public bool WonGame { get;set; }
 }
 
 public class GameConfiguration : IEntityTypeConfiguration<Game>

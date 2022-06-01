@@ -5,11 +5,11 @@
       Hello World
       <v-card-text>
         <v-row>
-          <v-col> Plays </v-col>
-          <v-col> Avg. Attempts </v-col>
-          <v-col> Avg. Time </v-col>
+          <v-col> Plays</v-col>
+          <v-col> Avg. Attempts</v-col>
+          <v-col> Avg. Time</v-col>
         </v-row>
-        <v-row>
+        <v-row v-if="dateStats==null">
           <v-col>
             {{ dateStats.dayPlays }}
           </v-col>
@@ -26,9 +26,9 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator'
+import {Component, Prop, Vue} from 'vue-property-decorator'
 
-@Component({ components: {} })
+@Component({components: {}})
 export default class DayStats extends Vue {
   @Prop({required: true})
   dateStats = null

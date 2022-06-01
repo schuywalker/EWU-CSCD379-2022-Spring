@@ -66,6 +66,9 @@ namespace Wordle.Api.Migrations
                     b.Property<int>("Seconds")
                         .HasColumnType("int");
 
+                    b.Property<bool>("WonGame")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime?>("WordDate")
                         .HasColumnType("datetime2");
 

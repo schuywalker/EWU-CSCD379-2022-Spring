@@ -18,9 +18,15 @@ namespace Wordle.Api.Services
             for(int i = 10; i >=0; i--)
             {
                 DateTime day = DateTime.Now.AddDays(-i);
+                
                 var daysGames = _context.Games.Where(g=>g.GameType == Game.GameTypeEnum.PlayedWordOfTheDay || g.GameType == Game.GameTypeEnum.WordOfTheDay)
                 .Where(g => g.WordId == _context.DateWords.Where(dw => dw.Date == day).Select(dw => dw.WordId).First()).ToList();
+                
+                var guesses = (from a in daysGames
+                               join b in _context.Guesses.ToList() on a.GameId equals b.GameId
+                               select a.Guesses).ToList();
 
+                
                 int gameWins = daysGames.Where(g => g.Guesses.Count > 0 && g.Guesses.Count != 7).Count();
                 int gameFails = daysGames.Where(g => g.Guesses.Count == 7).Count();
 

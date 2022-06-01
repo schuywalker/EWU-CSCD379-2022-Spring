@@ -18,14 +18,36 @@ import {Component, Vue} from 'vue-property-decorator'
 export default class PrevDayStats extends Vue {
   recentStats :any = []
 
-  created() {
-  this.getRecentStats()
+  playerGuid: string = ''
+  mounted() {
+    const playerGUID = localStorage.getItem('playerGUID')
+    if (playerGUID == null) {
+      this.playerGuid = Guid.newGuid()
+      localStorage.setItem('playerGUID', this.playerGuid)
+    } else {
+      this.playerGuid = playerGUID
+    }
+    console.log(this.playerGuid)
+    this.$axios
+      .post('/api/RecentStats',{
+        guid: this.playerGuid
+      })
+      .then((response) => {
+        this.recentStats = response.data
+        console.log(response)
+      }).catch((error)=>console.log(error));
   }
-
-  getRecentStats() {
-    return this.$axios.get('/api/Recents').then((response) => {
-      this.recentStats = response.data
-    });
+}
+class Guid {
+  static newGuid() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+      /[xy]/g,
+      function (c) {
+        const r = (Math.random() * 16) | 0
+        const v = c === 'x' ? r : (r & 0x3) | 0x8
+        return v.toString(16)
+      }
+    )
   }
 }
 </script>

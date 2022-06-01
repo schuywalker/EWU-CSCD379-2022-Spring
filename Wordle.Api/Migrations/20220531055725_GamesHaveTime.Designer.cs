@@ -12,8 +12,8 @@ using Wordle.Api.Data;
 namespace Wordle.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220601043207_recreateDB")]
-    partial class recreateDB
+    [Migration("20220531055725_GamesHaveTime")]
+    partial class GamesHaveTime
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

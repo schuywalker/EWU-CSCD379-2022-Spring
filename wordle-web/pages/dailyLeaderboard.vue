@@ -1,6 +1,17 @@
 <template>
-  <v-container fluid fill-height justify-center>
-    <v-card  v-if="showStats" >
+  <v-container fluid fill-height>
+    <v-container v-if="!showStats" :key="showStats">
+      <v-row justify="center">
+        <v-card loading>
+          <v-card-title class="justify-center">
+            You're being exploited for ad revenue, please standby...
+          </v-card-title>
+          <PrerollAd/>
+        </v-card>
+      </v-row>
+    </v-container>
+  <v-container v-else fluid fill-height justify-center>
+    <v-card>
       <v-card-title class="display-3 justify-center">
         Leader Board
       </v-card-title>
@@ -8,6 +19,7 @@
         <day-stats :dateStats="dayStats"></day-stats>
       </v-container>
     </v-card>
+  </v-container>
   </v-container>
 </template>
 

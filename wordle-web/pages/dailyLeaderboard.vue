@@ -27,18 +27,20 @@ export default class PrevDayStats extends Vue {
     } else {
       this.playerGuid = playerGUID
     }
+    console.log(this.playerGuid)
     this.$axios
-      .post('/api/RecentStats', {
-        playerGuid: this.playerGuid,
+      .post('/api/RecentStats',{
+        guid: this.playerGuid
       })
       .then((response) => {
         this.recentStats = response.data
-      })
+        console.log(response)
+      }).catch((error)=>console.log(error));
   }
 }
 class Guid {
   static newGuid() {
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
       /[xy]/g,
       function (c) {
         const r = (Math.random() * 16) | 0

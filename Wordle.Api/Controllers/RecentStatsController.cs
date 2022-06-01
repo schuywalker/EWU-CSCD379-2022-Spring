@@ -17,9 +17,13 @@ public class RecentStatsController : ControllerBase
     }
 
     [HttpPost]
-    public IEnumerable<RecentStats> Get([FromBody] string playerId)
+    public IEnumerable<RecentStats> Post([FromBody] PlayerGuid player)
     {
-        return _service.GetRecentScoreStats(playerId);
-
+        var list = _service.GetRecentScoreStats(player.Guid);
+        return list;
+    }
+    public class PlayerGuid
+    {
+        public Guid Guid { get; set; }
     }
 }

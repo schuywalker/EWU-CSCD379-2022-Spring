@@ -12,8 +12,8 @@ using Wordle.Api.Data;
 namespace Wordle.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220531055725_GamesHaveTime")]
-    partial class GamesHaveTime
+    [Migration("20220601050759_recreateDB4")]
+    partial class recreateDB4
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -67,6 +67,9 @@ namespace Wordle.Api.Migrations
 
                     b.Property<int>("Seconds")
                         .HasColumnType("int");
+
+                    b.Property<bool>("WonGame")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("WordDate")
                         .HasColumnType("datetime2");

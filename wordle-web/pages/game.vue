@@ -269,7 +269,7 @@ export default class Game extends Vue {
   }
 
   get gameResult() {
-    this.stopwatch.Stop()
+    this.stopwatch.Stop();
     if (this.wordleGame.state === GameState.Won) {
       if (
         this.playerName.toLocaleLowerCase() !== 'guest' &&

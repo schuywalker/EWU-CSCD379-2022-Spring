@@ -1,28 +1,29 @@
 <template>
-  <v-card class="ma-5 py-1" max-width="600px" flat>
-    <v-container>
-      <v-card-title>Day stats for {{ date }}</v-card-title>
-      Hello World
+  <v-row>
+      <v-card-title>Day stats for: {{ new Date(dateStats.day).toDateString() }}</v-card-title>
       <v-card-text>
         <v-row>
           <v-col> Plays</v-col>
           <v-col> Avg. Attempts</v-col>
           <v-col> Avg. Time</v-col>
+          <v-col> Win Rate</v-col>
         </v-row>
-        <v-row v-if="dateStats==null">
+        <v-row>
           <v-col>
-            {{ dateStats.dayPlays }}
+            {{ dateStats.plays }}
           </v-col>
           <v-col>
-            {{ dateStats.dayAttempts }}
+            {{ dateStats.averageGuesses }}
           </v-col>
           <v-col>
-            {{ dateStats.dayTime }}
+            {{ dateStats.averageTime }}
+          </v-col>
+          <v-col>
+            {{ dateStats.winRate }}
           </v-col>
         </v-row>
       </v-card-text>
-    </v-container>
-  </v-card>
+  </v-row>
 </template>
 
 <script lang="ts">
@@ -31,7 +32,11 @@ import {Component, Prop, Vue} from 'vue-property-decorator'
 @Component({components: {}})
 export default class DayStats extends Vue {
   @Prop({required: true})
-  dateStats = null
+  dateStats!: undefined
+
+  mounted(){
+    console.log(this.dateStats)
+  }
 
   // playerStatsDisplay: any = {
   //   day: Date,

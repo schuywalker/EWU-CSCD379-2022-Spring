@@ -19,7 +19,7 @@ public class RecentStatsController : ControllerBase
     [HttpPost]
     public IEnumerable<RecentStats> Post([FromBody] PlayerGuid player)
     {
-        var list = _service.GetRecentScoreStats(player.Guid);
+        var list = _service.GetRecentScoreStats(player.Guid).Reverse();
         return list;
     }
     public class PlayerGuid

@@ -10,16 +10,20 @@
         </v-card>
       </v-row>
     </v-container>
-  <v-container v-else fluid fill-height justify-center>
-    <v-card>
-      <v-card-title class="display-3 justify-center">
-        Leader Board
-      </v-card-title>
-      <v-container v-for="(dayStats, index) in recentStats" :key="index">
-        <day-stats :dateStats="dayStats"></day-stats>
-      </v-container>
-    </v-card>
-  </v-container>
+    <v-container v-else fill-height justify-center>
+      <v-card>
+        <v-card-title class="display-3 justify-center">
+          Leader Board
+        </v-card-title>
+        <v-container>
+          <v-row v-for="(dayStats, index) in recentStats" :key="index">
+            <v-card>
+              <day-stats :dateStats="dayStats"></day-stats>
+            </v-card>
+          </v-row>
+        </v-container>
+      </v-card>
+    </v-container>
   </v-container>
 </template>
 
@@ -31,7 +35,7 @@ export default class PrevDayStats extends Vue {
   recentStats: any | null = null;
 
   playerGuid: string = ''
-  showStats: boolean =false;
+  showStats: boolean = false;
 
   mounted() {
     const playerGUID = localStorage.getItem('playerGUID')
@@ -54,8 +58,8 @@ export default class PrevDayStats extends Vue {
     // this.getData();
   }
 
-  async getData(){
-   // await
+  async getData() {
+    // await
   }
 }
 

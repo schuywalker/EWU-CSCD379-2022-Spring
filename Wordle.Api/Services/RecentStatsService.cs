@@ -23,8 +23,8 @@ namespace Wordle.Api.Services
                 var wordId = _context.DateWords.Where(dw => dw.Date == day).Select(dw => dw.WordId).FirstOrDefault();
                 var daysGames = _context.Games.Include(g=>g.Guesses).Include(g=>g.Player).Where(g => (g.GameType == Game.GameTypeEnum.PlayedWordOfTheDay || g.GameType == Game.GameTypeEnum.WordOfTheDay) && g.WordId == wordId).ToList();
                  
-                int gameWins = daysGames.Where(g => g.Guesses.Count > 0 && g.Guesses.Count < 7).Count();
-                int gameFails = daysGames.Where(g => g.Guesses.Count == 7).Count();
+                int gameWins = daysGames.Where(g => g.WonGame == true).Count();
+                int gameFails = daysGames.Where(g => g.WonGame == false).Count();
 
                 double winRate = 0;
                 if (gameFails != 0)
@@ -47,7 +47,12 @@ namespace Wordle.Api.Services
 
                 double secondsPlayed = 0;
                 daysGames.ForEach(x => secondsPlayed += x.Seconds);
-                int averageTime = (int)Math.Floor(secondsPlayed / daysGames.Count);
+
+                int averageTime = 0; 
+                if (daysGames.Count != 0)
+                {
+                    averageTime = (int)Math.Floor(secondsPlayed / daysGames.Count);
+                }               
 
                 recents.Add(new RecentStats(day, daysGames.Count, averageGuesses, averageTime, winRate, wonDay));
             }

@@ -26,7 +26,7 @@ The purpose of this assignment is to solidify your learning of:
   - Any logged in user can change the common word flag ❌✅
     - There is a login page/component/popup/etc for users to sign in ❌✅
   - Only users over 21 years of age (based on birthday) with a claim of MasterOfTheUniverse can add and remove words ❌✅
-  - Users can be set up at start up (apriori), there does not need to be a sign up mechanism ❌✅
+  - Users can be set up at start up in the API project as a seed (apriori), there does not need to be a sign up mechanism ❌✅
 
 ## Turn in Process
 
